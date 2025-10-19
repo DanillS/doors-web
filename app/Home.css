@@ -1,0 +1,666 @@
+/* Home.css */
+
+/* Основные стили контейнера */
+.home-container {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-main {
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .home-main {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-main {
+    padding: 2rem;
+  }
+}
+
+/* Заголовок */
+.home-header {
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .home-header {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.home-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+}
+
+@media (min-width: 640px) {
+  .home-title {
+    font-size: 1.875rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-title {
+    font-size: 2.25rem;
+  }
+}
+
+.home-subtitle {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+@media (min-width: 640px) {
+  .home-subtitle {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-subtitle {
+    font-size: 1.125rem;
+  }
+}
+
+/* Секция фильтров */
+.filters-section {
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .filters-section {
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Секция каталога */
+.catalog-section {
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .catalog-section {
+    margin-bottom: 2rem;
+  }
+}
+
+.catalog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .catalog-header {
+    margin-bottom: 1rem;
+  }
+}
+
+.catalog-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+@media (min-width: 640px) {
+  .catalog-title {
+    font-size: 1.125rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .catalog-title {
+    font-size: 1.25rem;
+  }
+}
+
+.catalog-count {
+  color: #6b7280;
+  font-size: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .catalog-count {
+    font-size: 0.875rem;
+  }
+}
+
+/* Сетка карточек */
+.doors-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .doors-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .doors-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .doors-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Состояние пустого каталога */
+.empty-catalog {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .empty-catalog {
+    padding: 2rem;
+  }
+}
+
+.empty-icon {
+  font-size: 3rem;
+  color: #d1d5db;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .empty-icon {
+    font-size: 4rem;
+  }
+}
+
+.empty-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .empty-title {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .empty-title {
+    font-size: 1.125rem;
+  }
+}
+
+.empty-description {
+  color: #6b7280;
+  font-size: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .empty-description {
+    font-size: 0.875rem;
+  }
+}
+
+/* Секция контактов */
+.contact-section {
+  background-color: #2563eb;
+  border-radius: 0.5rem;
+  color: white;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .contact-section {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .contact-section {
+    padding: 2rem;
+  }
+}
+
+.contact-content {
+  text-align: center;
+}
+
+.contact-title {
+  font-size: 1.125rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .contact-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .contact-title {
+    font-size: 1.5rem;
+  }
+}
+
+.contact-description {
+  color: #bfdbfe;
+  font-size: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .contact-description {
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .contact-description {
+    font-size: 1rem;
+  }
+}
+
+.contact-button {
+  display: inline-block;
+  background-color: white;
+  color: #2563eb;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 0.75rem;
+}
+
+.contact-button:hover {
+  background-color: #f3f4f6;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  transform: scale(1.05);
+}
+
+.contact-button:active {
+  transform: scale(0.95);
+}
+
+@media (min-width: 640px) {
+  .contact-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .contact-button {
+    font-size: 1rem;
+  }
+}
+
+/* Футер */
+.home-footer {
+  background-color: #1f2937;
+  color: white;
+  padding: 1rem 0;
+  margin-top: auto;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.footer-text {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+@media (min-width: 640px) {
+  .footer-text {
+    font-size: 0.875rem;
+  }
+}
+
+/* Стили загрузки */
+.loading-container {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-content {
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid #2563eb;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem auto;
+}
+
+.loading-text {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Адаптивные медиа-запросы */
+@media (max-width: 639px) {
+  .home-main {
+    padding: 0.5rem;
+  }
+  
+  .home-title {
+    font-size: 1.25rem;
+  }
+  
+  .home-subtitle {
+    font-size: 0.8rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .home-main {
+    max-width: 1400px;
+  }
+  
+  .doors-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* Утилитарные классы для текста */
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+/* Ховер-эффекты для интерактивных элементов */
+.interactive:hover {
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+.interactive:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+/* Плавные переходы */
+* {
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* DoorCard Styles */
+.door-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.door-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.door-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.door-image-container {
+  position: relative;
+  background-color: #f3f4f6;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+}
+
+.door-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.door-card:hover .door-image {
+  transform: scale(1.05);
+}
+
+.door-image-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+}
+
+.fallback-content {
+  text-align: center;
+}
+
+.fallback-icon {
+  font-size: 2rem;
+  color: #9ca3af;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.fallback-text {
+  color: #6b7280;
+  font-size: 0.75rem;
+}
+
+.favorite-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #9ca3af;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 640px) {
+  .favorite-button {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.875rem;
+  }
+}
+
+.favorite-button:hover {
+  background-color: white;
+  transform: scale(1.1);
+}
+
+.favorite-active {
+  background-color: #ef4444;
+  color: white;
+  transform: scale(1.1);
+}
+
+.price-badge {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  background-color: #2563eb;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 640px) {
+  .price-badge {
+    font-size: 0.875rem;
+    padding: 0.375rem 0.625rem;
+  }
+}
+
+.door-info {
+  padding: 0.75rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 640px) {
+  .door-info {
+    padding: 1rem;
+  }
+}
+
+.door-title {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
+}
+
+@media (min-width: 640px) {
+  .door-title {
+    font-size: 1rem;
+  }
+}
+
+.door-details {
+  margin-bottom: 0.75rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.detail-label {
+  color: #6b7280;
+  font-size: 0.75rem;
+}
+
+.detail-value {
+  font-weight: 500;
+  color: #374151;
+  font-size: 0.75rem;
+  max-width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .detail-label,
+  .detail-value {
+    font-size: 0.875rem;
+  }
+}
+
+.quick-order-button {
+  width: 100%;
+  background-color: #059669;
+  color: white;
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  border: none;
+  font-size: 0.75rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.quick-order-button:hover {
+  background-color: #047857;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+@media (min-width: 640px) {
+  .quick-order-button {
+    padding: 0.625rem;
+    font-size: 0.875rem;
+  }
+}
+
+.button-icon {
+  font-size: 0.875rem;
+}
+
+.button-text {
+  font-size: inherit;
+}

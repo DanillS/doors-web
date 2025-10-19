@@ -1,0 +1,621 @@
+/* DoorPage.css */
+
+/* Основные стили страницы */
+.door-page {
+  min-height: 100vh;
+  background-color: #f9fafb;
+}
+
+/* Загрузка */
+.door-loading {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-content {
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid #2563eb;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem auto;
+}
+
+.loading-text {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Страница не найдена */
+.door-not-found {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.not-found-content {
+  text-align: center;
+}
+
+.not-found-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.not-found-link {
+  color: #2563eb;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.2s ease;
+}
+
+.not-found-link:hover {
+  color: #1d4ed8;
+}
+
+/* Хедер */
+.door-header {
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.logo {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: #2563eb;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-text {
+  color: white;
+  font-weight: bold;
+  font-size: 1.125rem;
+}
+
+.logo-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin: 0;
+}
+
+.phone-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #2563eb;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.phone-button:hover {
+  background-color: #1d4ed8;
+}
+
+.phone-icon {
+  font-size: 1rem;
+}
+
+.phone-text {
+  font-size: 0.875rem;
+}
+
+/* Хлебные крошки */
+.door-breadcrumbs {
+  background-color: transparent;
+}
+
+.breadcrumbs-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.breadcrumbs-list {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 1rem 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.breadcrumb-link {
+  color: #6b7280;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumb-link:hover {
+  color: #2563eb;
+}
+
+.breadcrumb-separator {
+  color: #9ca3af;
+}
+
+.breadcrumb-current {
+  color: #1f2937;
+  font-weight: 500;
+}
+
+/* Основной контент */
+.door-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem 2rem;
+}
+
+.door-content-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+/* Секция изображения */
+.door-image-section {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.door-image {
+  width: 100%;
+  height: 24rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.door-image-fallback {
+  width: 100%;
+  height: 24rem;
+  background-color: #f3f4f6;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fallback-content {
+  text-align: center;
+}
+
+.fallback-icon {
+  font-size: 4rem;
+  color: #9ca3af;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.fallback-text {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+/* Секция информации */
+.door-info-section {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.door-header-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.door-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin: 0;
+  flex: 1;
+  margin-right: 1rem;
+}
+
+.favorite-button {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  background-color: #f3f4f6;
+  color: #9ca3af;
+}
+
+.favorite-button:hover {
+  background-color: #e5e7eb;
+}
+
+.favorite-active {
+  background-color: #ef4444;
+  color: white;
+}
+
+.door-price {
+  font-size: 1.875rem;
+  font-weight: bold;
+  color: #2563eb;
+  margin-bottom: 1.5rem;
+}
+
+.door-description {
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+/* Характеристики */
+.door-specs {
+  margin-bottom: 1.5rem;
+}
+
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.spec-row:last-child {
+  border-bottom: none;
+}
+
+.spec-label {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.spec-value {
+  font-weight: 500;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+/* Кнопка заказа */
+.order-button {
+  display: block;
+  width: 100%;
+  background-color: #059669;
+  color: white;
+  text-align: center;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 1.125rem;
+  margin-bottom: 1.5rem;
+}
+
+.order-button:hover {
+  background-color: #047857;
+}
+
+.order-icon {
+  font-size: 1.25rem;
+  margin-right: 0.5rem;
+}
+
+.order-text {
+  font-size: 1.125rem;
+}
+
+/* Дополнительная информация */
+.order-info {
+  background-color: #dbeafe;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #bfdbfe;
+}
+
+.order-info-title {
+  font-weight: 600;
+  color: #1e40af;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.order-info-list {
+  color: #1e40af;
+  font-size: 0.75rem;
+  margin: 0;
+  padding-left: 1rem;
+  line-height: 1.5;
+}
+
+.order-info-list li {
+  margin-bottom: 0.25rem;
+}
+
+.order-info-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* Адаптивность */
+@media (min-width: 1024px) {
+  .door-content-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  
+  .door-main {
+    padding: 0 2rem 2rem;
+  }
+  
+  .header-container,
+  .breadcrumbs-container {
+    padding: 0 2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .door-info-section {
+    padding: 2rem;
+  }
+  
+  .door-image-section {
+    padding: 1.5rem;
+  }
+  
+  .door-title {
+    font-size: 1.875rem;
+  }
+  
+  .door-price {
+    font-size: 2.25rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .door-main {
+    padding: 0 1rem 1rem;
+  }
+  
+  .header-content {
+    padding: 0.75rem 0;
+  }
+  
+  .logo {
+    width: 2rem;
+    height: 2rem;
+  }
+  
+  .logo-text {
+    font-size: 1rem;
+  }
+  
+  .logo-title {
+    font-size: 1.125rem;
+  }
+  
+  .phone-text {
+    display: none;
+  }
+  
+  .phone-button {
+    padding: 0.5rem;
+  }
+  
+  .breadcrumbs-list {
+    font-size: 0.75rem;
+    padding: 0.75rem 0;
+  }
+  
+  .door-title {
+    font-size: 1.25rem;
+  }
+  
+  .door-price {
+    font-size: 1.5rem;
+  }
+  
+  .door-image,
+  .door-image-fallback {
+    height: 20rem;
+  }
+  
+  .order-button {
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .door-header-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .door-title {
+    margin-right: 0;
+  }
+  
+  .favorite-button {
+    align-self: flex-start;
+  }
+  
+  .door-image,
+  .door-image-fallback {
+    height: 16rem;
+  }
+  
+  .spec-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}
+
+/* Состояния фокуса для доступности */
+.logo-link:focus-visible,
+.phone-button:focus-visible,
+.breadcrumb-link:focus-visible,
+.favorite-button:focus-visible,
+.order-button:focus-visible,
+.not-found-link:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Плавные переходы */
+* {
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, 
+              box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+/* Улучшения для темной темы */
+@media (prefers-color-scheme: dark) {
+  .door-page {
+    background-color: #111827;
+  }
+  
+  .door-header {
+    background-color: #1f2937;
+    border-bottom-color: #374151;
+  }
+  
+  .logo-title {
+    color: #f9fafb;
+  }
+  
+  .breadcrumb-link {
+    color: #9ca3af;
+  }
+  
+  .breadcrumb-link:hover {
+    color: #60a5fa;
+  }
+  
+  .breadcrumb-current {
+    color: #f9fafb;
+  }
+  
+  .door-image-section,
+  .door-info-section {
+    background-color: #1f2937;
+    border-color: #374151;
+  }
+  
+  .door-image-fallback {
+    background-color: #374151;
+  }
+  
+  .fallback-text {
+    color: #9ca3af;
+  }
+  
+  .door-title {
+    color: #f9fafb;
+  }
+  
+  .favorite-button {
+    background-color: #374151;
+    color: #9ca3af;
+  }
+  
+  .favorite-button:hover {
+    background-color: #4b5563;
+  }
+  
+  .door-price {
+    color: #60a5fa;
+  }
+  
+  .door-description {
+    color: #d1d5db;
+  }
+  
+  .spec-label {
+    color: #9ca3af;
+  }
+  
+  .spec-value {
+    color: #e5e7eb;
+  }
+  
+  .spec-row {
+    border-bottom-color: #374151;
+  }
+  
+  .order-info {
+    background-color: #1e3a8a;
+    border-color: #3730a3;
+  }
+  
+  .order-info-title {
+    color: #dbeafe;
+  }
+  
+  .order-info-list {
+    color: #dbeafe;
+  }
+}
