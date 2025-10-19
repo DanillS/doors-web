@@ -1,0 +1,391 @@
+/* SearchFilter.css */
+
+/* Основной контейнер */
+.search-filter-container {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  animation: fadeIn 0.5s ease-out;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (min-width: 768px) {
+  .search-filter-container {
+    padding: 2rem;
+  }
+}
+
+/* Заголовок */
+.search-filter-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+@media (min-width: 768px) {
+  .search-filter-title {
+    font-size: 1.875rem;
+  }
+}
+
+/* Сетка фильтров */
+.search-filter-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .search-filter-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* Группа фильтров */
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.filter-label {
+  display: block;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Контейнер поиска */
+.search-input-container {
+  position: relative;
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 0.75rem;
+  outline: none;
+  font-size: 1.125rem;
+  color: #1f2937;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-input::placeholder {
+  color: #6b7280;
+}
+
+.search-input:focus {
+  background-color: white;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5);
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.25rem;
+  color: #6b7280;
+  pointer-events: none;
+}
+
+/* Контейнер цены */
+.price-filter-container {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.price-display {
+  text-align: center;
+}
+
+.price-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Слайдер цены */
+.price-slider {
+  width: 100%;
+  height: 0.5rem;
+  border-radius: 0.25rem;
+  background: #e5e7eb;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.price-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background: #2563eb;
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.price-slider::-webkit-slider-thumb:hover {
+  background: #1d4ed8;
+  transform: scale(1.1);
+}
+
+.price-slider::-moz-range-thumb {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background: #2563eb;
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.price-slider::-webkit-slider-track {
+  background: #e5e7eb;
+  border-radius: 0.25rem;
+  height: 0.5rem;
+}
+
+.price-slider::-moz-range-track {
+  background: #e5e7eb;
+  border-radius: 0.25rem;
+  height: 0.5rem;
+}
+
+/* Метки цены */
+.price-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* Контейнер выбора материала */
+.select-container {
+  position: relative;
+  width: 100%;
+}
+
+.material-select {
+  width: 100%;
+  padding: 1rem 3rem 1rem 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 0.75rem;
+  outline: none;
+  font-size: 1.125rem;
+  color: #1f2937;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  appearance: none;
+  cursor: pointer;
+}
+
+.material-select:focus {
+  background-color: white;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5);
+}
+
+.material-select option {
+  color: #1f2937;
+  background-color: white;
+  padding: 0.5rem;
+}
+
+.select-arrow {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.25rem;
+  color: #6b7280;
+  pointer-events: none;
+}
+
+/* Контейнер кнопки сброса */
+.reset-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.reset-button {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.75rem 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0.75rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.reset-button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.reset-button:active {
+  transform: translateY(0);
+}
+
+.reset-icon {
+  font-size: 1rem;
+}
+
+.reset-text {
+  font-size: 1rem;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Адаптивность */
+@media (max-width: 640px) {
+  .search-filter-container {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .search-filter-title {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .search-filter-grid {
+    gap: 1rem;
+  }
+  
+  .filter-label {
+    font-size: 1rem;
+  }
+  
+  .search-input,
+  .material-select {
+    padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+    font-size: 1rem;
+  }
+  
+  .search-icon {
+    left: 0.75rem;
+    font-size: 1rem;
+  }
+  
+  .select-arrow {
+    right: 0.75rem;
+    font-size: 1rem;
+  }
+  
+  .price-filter-container {
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+  
+  .price-value {
+    font-size: 1.25rem;
+  }
+  
+  .reset-button {
+    padding: 0.625rem 1.5rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-filter-title {
+    font-size: 1.125rem;
+  }
+  
+  .filter-label {
+    font-size: 0.875rem;
+  }
+  
+  .price-labels {
+    font-size: 0.75rem;
+  }
+  
+  .reset-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Состояния фокуса для доступности */
+.search-input:focus-visible,
+.material-select:focus-visible,
+.reset-button:focus-visible,
+.price-slider:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Плавные переходы */
+* {
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, 
+              box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+/* Улучшения для темной темы */
+@media (prefers-color-scheme: dark) {
+  .search-input,
+  .material-select,
+  .price-filter-container {
+    background-color: rgba(255, 255, 255, 0.95);
+  }
+  
+  .search-input:focus,
+  .material-select:focus {
+    background-color: white;
+  }
+}
+
+/* Специфичные стили для Webkit браузеров */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  .price-slider {
+    height: 0.375rem;
+  }
+  
+  .price-slider::-webkit-slider-thumb {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+}
