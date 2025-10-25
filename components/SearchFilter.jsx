@@ -1,132 +1,177 @@
 'use client';
 import { useState } from 'react';
-import './SearchFilter.css';
+import { Search, Filter, X, SlidersHorizontal } from 'lucide-react';
+import styles from './SearchFilter.module.css';
 
 export default function SearchFilter({ onSearch, onFilter, doors }) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [priceRange, setPriceRange] = useState([0, 50000]);
-  const [selectedMaterial, setSelectedMaterial] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState({
+    priceRange: [0, 500000],
+    material: '',
+    minPrice: '',
+    maxPrice: ''
+  });
 
-  const materials = [...new Set(doors.map(door => door.material))];
+  // Уникальные материалы для фильтра
+  const materials = [...new Set(doors.map(door => door.material).filter(Boolean))];
 
-  const handleSearch = (e) => {
+  const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
     onSearch(value);
   };
 
-  const handlePriceChange = (e) => {
-    const newMaxPrice = parseInt(e.target.value);
-    const newPriceRange = [0, newMaxPrice];
-    setPriceRange(newPriceRange);
-    onFilter({ priceRange: newPriceRange, material: selectedMaterial });
+  const handleFilterChange = (key, value) => {
+    const newFilters = { ...filters, [key]: value };
+    
+    // Обновляем диапазон цен
+    if (key === 'minPrice' || key === 'maxPrice') {
+      const min = key === 'minPrice' ? parseInt(value) || 0 : parseInt(filters.minPrice) || 0;
+      const max = key === 'maxPrice' ? parseInt(value) || 500000 : parseInt(filters.maxPrice) || 500000;
+      newFilters.priceRange = [min, max];
+    }
+    
+    setFilters(newFilters);
+    onFilter(newFilters);
   };
 
-  const handleMaterialChange = (e) => {
-    const material = e.target.value;
-    setSelectedMaterial(material);
-    onFilter({ priceRange, material });
+  const handleMaterialChange = (material) => {
+    const newFilters = { ...filters, material };
+    setFilters(newFilters);
+    onFilter(newFilters);
   };
 
-  const resetFilters = () => {
-    setSearchTerm('');
-    setPriceRange([0, 50000]);
-    setSelectedMaterial('');
-    onSearch('');
-    onFilter({ priceRange: [0, 50000], material: '' });
+  const clearFilters = () => {
+    const clearedFilters = {
+      priceRange: [0, 500000],
+      material: '',
+      minPrice: '',
+      maxPrice: ''
+    };
+    setFilters(clearedFilters);
+    onFilter(clearedFilters);
   };
+
+  const hasActiveFilters = filters.material || filters.minPrice || filters.maxPrice;
 
   return (
-    <div className="search-filter-container">
-      <h2 className="search-filter-title">
-        🎯 Найди свою идеальную дверь
-      </h2>
-      
-      <div className="search-filter-grid">
-        
-        {/* Поиск по названию */}
-        <div className="filter-group">
-          <label className="filter-label">
-            🔍 Поиск дверей
-          </label>
-          <div className="search-input-container">
+    <div className={styles.searchFilter}>
+      {/* Основная строка поиска */}
+      <div className={styles.searchSection}>
+        <div className={styles.searchContainer}>
+          <div className={styles.searchInputWrapper}>
+            <Search className={styles.searchIcon} />
             <input
               type="text"
+              placeholder="Поиск по названию, материалу или описанию..."
               value={searchTerm}
-              onChange={handleSearch}
-              placeholder="Название двери..."
-              className="search-input"
+              onChange={handleSearchChange}
+              className={styles.searchInput}
             />
-            <div className="search-icon">
-              🔎
-            </div>
           </div>
+          
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className={`${styles.filterToggle} ${showFilters ? styles.active : ''} ${hasActiveFilters ? styles.hasFilters : ''}`}
+          >
+            <SlidersHorizontal size={20} />
+            <span>Фильтры</span>
+            {hasActiveFilters && <div className={styles.filterDot}></div>}
+          </button>
         </div>
-
-        {/* Фильтр по цене */}
-        <div className="filter-group">
-          <label className="filter-label">
-            💰 Диапазон цен
-          </label>
-          <div className="price-filter-container">
-            <div className="price-display">
-              <span className="price-value">
-                до {priceRange[1].toLocaleString()} ₽
-              </span>
-            </div>
-            <input
-              type="range"
-              min="0"
-              max="50000"
-              step="1000"
-              value={priceRange[1]}
-              onChange={handlePriceChange}
-              className="price-slider"
-            />
-            <div className="price-labels">
-              <span>0 ₽</span>
-              <span>25,000 ₽</span>
-              <span>50,000 ₽</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Фильтр по материалу */}
-        <div className="filter-group">
-          <label className="filter-label">
-            🏗️ Материал двери
-          </label>
-          <div className="select-container">
-            <select
-              value={selectedMaterial}
-              onChange={handleMaterialChange}
-              className="material-select"
-            >
-              <option value="">Все материалы</option>
-              {materials.map(material => (
-                <option key={material} value={material}>
-                  {material}
-                </option>
-              ))}
-            </select>
-            <div className="select-arrow">
-              ⬇️
-            </div>
-          </div>
-        </div>
-
       </div>
 
-      {/* Кнопка сброса */}
-      <div className="reset-button-container">
-        <button
-          onClick={resetFilters}
-          className="reset-button"
-        >
-          <span className="reset-icon">🔄</span>
-          <span className="reset-text">Сбросить фильтры</span>
-        </button>
-      </div>
+      {/* Расширенные фильтры */}
+      {showFilters && (
+        <div className={styles.filtersSection}>
+          <div className={styles.filtersHeader}>
+            <h3 className={styles.filtersTitle}>Расширенные фильтры</h3>
+            {hasActiveFilters && (
+              <button onClick={clearFilters} className={styles.clearFilters}>
+                <X size={16} />
+                Сбросить
+              </button>
+            )}
+          </div>
+
+          <div className={styles.filtersGrid}>
+            {/* Фильтр по цене */}
+            <div className={styles.filterGroup}>
+              <label className={styles.filterLabel}>Диапазон цен</label>
+              <div className={styles.priceInputs}>
+                <div className={styles.priceInput}>
+                  <input
+                    type="number"
+                    placeholder="0"
+                    value={filters.minPrice}
+                    onChange={(e) => handleFilterChange('minPrice', e.target.value)}
+                    className={styles.input}
+                  />
+                  <span className={styles.currency}>₽</span>
+                </div>
+                <div className={styles.priceSeparator}>—</div>
+                <div className={styles.priceInput}>
+                  <input
+                    type="number"
+                    placeholder="500000"
+                    value={filters.maxPrice}
+                    onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
+                    className={styles.input}
+                  />
+                  <span className={styles.currency}>₽</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Фильтр по материалу */}
+            <div className={styles.filterGroup}>
+              <label className={styles.filterLabel}>Материал</label>
+              <div className={styles.materialFilters}>
+                <button
+                  onClick={() => handleMaterialChange('')}
+                  className={`${styles.materialButton} ${!filters.material ? styles.active : ''}`}
+                >
+                  Все материалы
+                </button>
+                {materials.map(material => (
+                  <button
+                    key={material}
+                    onClick={() => handleMaterialChange(material)}
+                    className={`${styles.materialButton} ${filters.material === material ? styles.active : ''}`}
+                  >
+                    {material}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Активные фильтры */}
+          {hasActiveFilters && (
+            <div className={styles.activeFilters}>
+              <span className={styles.activeFiltersLabel}>Активные фильтры:</span>
+              <div className={styles.activeFiltersList}>
+                {filters.material && (
+                  <span className={styles.activeFilter}>
+                    Материал: {filters.material}
+                    <button onClick={() => handleMaterialChange('')}>×</button>
+                  </span>
+                )}
+                {(filters.minPrice || filters.maxPrice) && (
+                  <span className={styles.activeFilter}>
+                    Цена: {filters.minPrice || 0}₽ — {filters.maxPrice || '500000'}₽
+                    <button onClick={() => {
+                      handleFilterChange('minPrice', '');
+                      handleFilterChange('maxPrice', '');
+                    }}>×</button>
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

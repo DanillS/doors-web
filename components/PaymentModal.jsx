@@ -1,234 +1,232 @@
 'use client';
 import { useState } from 'react';
-import { X, MessageCircle } from 'lucide-react';
+import { X, MessageCircle, Trash2, Plus, Minus } from 'lucide-react';
+import { useCart } from '../context/CartContext'; // Добавляем импорт контекста
+import styles from './PaymentModal.module.css';
 
 export default function PaymentModal({ 
   isOpen, 
-  onClose, 
-  totalAmount, 
-  doorCount, 
-  onPaymentSuccess 
+  onClose 
 }) {
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [sending, setSending] = useState(false);
 
-  const handleWhatsAppOrder = () => {
-    const phoneNumber = '79046726360';
-    const message = `Здравствуйте! Хочу заказать ${doorCount} дверей на сумму ${totalAmount.toLocaleString()} ₽`;
-    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-    window.open(url, '_blank');
-    onClose();
+  // Используем контекст корзины
+  const { 
+    cart, 
+    updateQuantity, 
+    removeFromCart, 
+    clearCart, 
+    getTotalItems,
+    getTotalPrice 
+  } = useCart();
+
+  // Функции управления корзиной (исправленные)
+  const increaseQuantity = (productId) => {
+    const item = cart.find(item => item.id === productId);
+    if (item) {
+      updateQuantity(productId, item.quantity + 1);
+    }
   };
 
-  // Обработка клика на фон
-  const handleBackdropClick = (e) => {
-    if (e.target === e.currentTarget) {
-      onClose();
+  const decreaseQuantity = (productId) => {
+    const item = cart.find(item => item.id === productId);
+    if (item && item.quantity > 1) {
+      updateQuantity(productId, item.quantity - 1);
     }
+  };
+
+  const handleRemoveFromCart = (productId) => {
+    removeFromCart(productId);
+  };
+
+  const handleClearCart = () => {
+    clearCart();
+  };
+
+  // Расчет итогов
+  const totalAmount = getTotalPrice();
+  const totalItems = getTotalItems();
+
+  const handleWhatsAppOrder = async () => {
+    if (cart.length === 0) return;
+    
+    setSending(true);
+    
+    const phoneNumber = '79046726360';
+    
+    // Форматируем детали заказа
+    const orderDetails = cart.map((item, index) => 
+      `🏷️ Товар ${index + 1}:
+📝 ${item.name}
+💰 Цена: ${item.price.toLocaleString()} ₽ × ${item.quantity} шт. = ${(item.price * item.quantity).toLocaleString()} ₽
+📏 Размер: ${item.size}
+🎨 Материал: ${item.material}
+🌈 Цвет: ${item.color}`
+    ).join('\n\n');
+
+    const message = `Здравствуйте! Хочу оформить заказ:
+
+${orderDetails}
+
+📊 ИТОГО:
+📦 Общее количество: ${totalItems} шт.
+💰 Сумма заказа: ${totalAmount.toLocaleString()} ₽
+
+Прошу связаться со мной для подтверждения заказа и согласования деталей доставки и монтажа.`;
+
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    
+    // Открываем WhatsApp
+    window.open(url, '_blank');
+    
+    // Закрываем модалку через секунду
+    setTimeout(() => {
+      setSending(false);
+      onClose();
+      handleClearCart(); // Очищаем корзину после отправки
+    }, 1000);
   };
 
   if (!isOpen) return null;
 
   return (
-    <div 
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 10000,
-        padding: '16px'
-      }}
-      onClick={handleBackdropClick}
-    >
-      <div 
-        style={{
-          backgroundColor: 'white',
-          borderRadius: '12px',
-          maxWidth: '448px',
-          width: '100%',
-          maxHeight: '90vh',
-          overflow: 'hidden',
-          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
-        }}
-      >
+    <div className={styles.modalOverlay}>
+      <div className={styles.modal}>
         {/* Заголовок */}
-        <div 
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '24px',
-            borderBottom: '1px solid #e5e7eb'
-          }}
-        >
-          <h2 style={{
-            fontSize: '20px',
-            fontWeight: 'bold',
-            color: '#1f2937',
-            margin: 0
-          }}>
-            Оформление заказа
-          </h2>
-          <button
-            onClick={onClose}
-            style={{
-              padding: '8px',
-              borderRadius: '8px',
-              border: 'none',
-              backgroundColor: 'transparent',
-              cursor: 'pointer'
-            }}
-            onMouseOver={(e) => e.target.style.backgroundColor = '#f3f4f6'}
-            onMouseOut={(e) => e.target.style.backgroundColor = 'transparent'}
-          >
-            <X size={20} color="#6b7280" />
+        <div className={styles.header}>
+          <div className={styles.headerContent}>
+            <h2 className={styles.title}>Корзина заказов</h2>
+            <p className={styles.subtitle}>Проверьте ваш заказ перед отправкой</p>
+          </div>
+          <button onClick={onClose} className={styles.closeButton}>
+            <X size={24} />
           </button>
         </div>
 
-        {/* Информация о заказе */}
-        <div style={{
-          padding: '24px',
-          borderBottom: '1px solid #e5e7eb'
-        }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: '8px'
-          }}>
-            <span style={{ color: '#6b7280' }}>Сумма заказа:</span>
-            <span style={{
-              fontSize: '24px',
-              fontWeight: 'bold',
-              color: '#059669'
-            }}>
-              {totalAmount.toLocaleString()} ₽
-            </span>
-          </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            fontSize: '14px',
-            color: '#6b7280'
-          }}>
-            <span>Товаров:</span>
-            <span>{doorCount} шт.</span>
-          </div>
-        </div>
+        {/* Содержимое корзины */}
+        <div className={styles.content}>
+          {cart.length === 0 ? (
+            <div className={styles.emptyCart}>
+              <div className={styles.emptyIcon}>🛒</div>
+              <h3 className={styles.emptyTitle}>Корзина пуста</h3>
+              <p className={styles.emptyText}>Добавьте товары из каталога</p>
+            </div>
+          ) : (
+            <>
+              {/* Список товаров */}
+              <div className={styles.cartItems}>
+                {cart.map((item) => (
+                  <div key={item.id} className={styles.cartItem}>
+                    <div className={styles.itemImage}>
+                      <img 
+                        src={item.image} 
+                        alt={item.name}
+                        onError={(e) => {
+                          e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2YzZjRmNiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM5Y2EzZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7inaTvuI88L3RleHQ+PC9zdmc+';
+                        }}
+                      />
+                    </div>
+                    
+                    <div className={styles.itemInfo}>
+                      <h4 className={styles.itemName}>{item.name}</h4>
+                      <div className={styles.itemSpecs}>
+                        <span>{item.material}</span>
+                        <span>•</span>
+                        <span>{item.size}</span>
+                        <span>•</span>
+                        <span>{item.color}</span>
+                      </div>
+                      <div className={styles.itemPrice}>
+                        {item.price.toLocaleString()} ₽/шт.
+                      </div>
+                    </div>
 
-        {/* Способ связи */}
-        <div style={{ padding: '24px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <button
-              onClick={handleWhatsAppOrder}
-              disabled={isProcessing}
-              style={{
-                width: '100%',
-                padding: '16px',
-                border: '2px solid #e5e7eb',
-                borderRadius: '12px',
-                textAlign: 'left',
-                backgroundColor: 'white',
-                cursor: isProcessing ? 'not-allowed' : 'pointer',
-                opacity: isProcessing ? 0.5 : 1,
-                transition: 'all 0.2s ease'
-              }}
-              onMouseOver={(e) => {
-                if (!isProcessing) {
-                  e.target.style.borderColor = '#d1d5db';
-                  e.target.style.backgroundColor = '#f9fafb';
-                }
-              }}
-              onMouseOut={(e) => {
-                if (!isProcessing) {
-                  e.target.style.borderColor = '#e5e7eb';
-                  e.target.style.backgroundColor = 'white';
-                }
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                <div 
-                  style={{
-                    width: '48px',
-                    height: '48px',
-                    backgroundColor: '#059669',
-                    borderRadius: '8px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}
-                >
-                  <MessageCircle size={24} color="white" />
+                    <div className={styles.itemControls}>
+                      <div className={styles.quantityControls}>
+                        <button 
+                          onClick={() => decreaseQuantity(item.id)}
+                          className={styles.quantityButton}
+                          disabled={item.quantity <= 1}
+                        >
+                          <Minus size={16} />
+                        </button>
+                        <span className={styles.quantity}>{item.quantity}</span>
+                        <button 
+                          onClick={() => increaseQuantity(item.id)}
+                          className={styles.quantityButton}
+                        >
+                          <Plus size={16} />
+                        </button>
+                      </div>
+                      
+                      <div className={styles.itemTotal}>
+                        {(item.price * item.quantity).toLocaleString()} ₽
+                      </div>
+                      
+                      <button 
+                        onClick={() => handleRemoveFromCart(item.id)}
+                        className={styles.removeButton}
+                        title="Удалить из корзины"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Итоговая сумма */}
+              <div className={styles.orderSummary}>
+                <div className={styles.summaryRow}>
+                  <span>Количество товаров:</span>
+                  <span>{totalItems} шт.</span>
                 </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{
-                    fontWeight: 600,
-                    color: '#1f2937',
-                    fontSize: '16px'
-                  }}>
-                    Заказ через WhatsApp
-                  </div>
-                  <div style={{
-                    fontSize: '14px',
-                    color: '#6b7280'
-                  }}>
-                    Напишите нам в мессенджер для оформления заказа
-                  </div>
+                <div className={styles.summaryRow}>
+                  <span>Общая стоимость:</span>
+                  <span className={styles.totalAmount}>
+                    {totalAmount.toLocaleString()} ₽
+                  </span>
                 </div>
               </div>
+
+              {/* Кнопка очистки корзины */}
+              <div className={styles.cartActions}>
+                <button onClick={handleClearCart} className={styles.clearButton}>
+                  Очистить корзину
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Футер с кнопкой отправки */}
+        {cart.length > 0 && (
+          <div className={styles.footer}>
+            <button
+              onClick={handleWhatsAppOrder}
+              disabled={sending || cart.length === 0}
+              className={styles.whatsappButton}
+            >
+              {sending ? (
+                <>
+                  <div className={styles.spinner}></div>
+                  <span>Отправка...</span>
+                </>
+              ) : (
+                <>
+                  <MessageCircle size={24} />
+                  <span>Отправить заказ в WhatsApp</span>
+                </>
+              )}
             </button>
-          </div>
-
-          {/* Инструкция */}
-          <div style={{
-            marginTop: '24px',
-            padding: '16px',
-            backgroundColor: '#f0fdf4',
-            borderRadius: '8px',
-            border: '1px solid #bbf7d0'
-          }}>
-            <h4 style={{
-              fontWeight: 600,
-              color: '#065f46',
-              marginBottom: '8px',
-              marginTop: 0
-            }}>
-              Как оформить заказ:
-            </h4>
-            <ol style={{
-              color: '#065f46',
-              fontSize: '14px',
-              margin: 0,
-              paddingLeft: '16px'
-            }}>
-              <li>Нажмите кнопку "Заказ через WhatsApp"</li>
-              <li>В открывшемся чате напишите нам</li>
-              <li>Укажите какие двери вас интересуют</li>
-              <li>Мы ответим в течение 5 минут</li>
-            </ol>
-          </div>
-
-          {/* Контактная информация */}
-          <div style={{ marginTop: '16px', textAlign: 'center' }}>
-            <div style={{
-              fontSize: '12px',
-              color: '#6b7280',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '16px'
-            }}>
-              <span>📞 +7 (904) 672-63-60</span>
-              <span>🕒 9:00 - 21:00</span>
+            
+            <div className={styles.securityBadges}>
+              <span>🔒 Конфиденциально</span>
+              <span>⚡ Мгновенно</span>
+              <span>💬 Персональный менеджер</span>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

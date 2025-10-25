@@ -1,3 +1,4 @@
+// components/AdminAuth.jsx
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -14,8 +15,15 @@ export default function AdminAuth({ children }) {
 
   const checkAuth = async () => {
     try {
+      console.log('Checking authentication...');
       const response = await fetch('/api/admin/check-auth');
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const data = await response.json();
+      console.log('Auth response:', data);
       setIsAuthenticated(data.authenticated);
     } catch (error) {
       console.error('Auth check failed:', error);
@@ -27,6 +35,7 @@ export default function AdminAuth({ children }) {
 
   const handleLogin = async (username, password) => {
     try {
+      console.log('Attempting login...');
       const response = await fetch('/api/admin/login', {
         method: 'POST',
         headers: {
@@ -36,23 +45,28 @@ export default function AdminAuth({ children }) {
       });
 
       const data = await response.json();
+      console.log('Login response:', data);
 
       if (data.success) {
         setIsAuthenticated(true);
+        // Обновляем страницу для применения куки
+        window.location.reload();
       } else {
-        alert('Неверные данные для входа');
+        alert(data.error || 'Неверные данные для входа');
       }
     } catch (error) {
       console.error('Login failed:', error);
-      alert('Ошибка при входе');
+      alert('Ошибка при входе. Проверьте подключение к серверу.');
     }
   };
 
   const handleLogout = async () => {
     try {
+      console.log('Logging out...');
       await fetch('/api/admin/logout', { method: 'POST' });
       setIsAuthenticated(false);
-      router.push('/');
+      // Обновляем страницу для очистки куки
+      window.location.reload();
     } catch (error) {
       console.error('Logout failed:', error);
     }
@@ -127,6 +141,7 @@ function LoginForm({ onLogin }) {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 disabled={isLoading}
+                autoComplete="username"
               />
             </div>
             
@@ -144,6 +159,7 @@ function LoginForm({ onLogin }) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={isLoading}
+                autoComplete="current-password"
               />
             </div>
           </div>

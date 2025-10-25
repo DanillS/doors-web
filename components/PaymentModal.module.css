@@ -1,0 +1,388 @@
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal {
+  background: var(--white);
+  border-radius: 20px;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.3s ease;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 32px 32px 0;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 24px;
+}
+
+.headerContent {
+  flex: 1;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: var(--transition);
+  margin-left: 16px;
+}
+
+.closeButton:hover {
+  background: var(--border);
+  color: var(--text);
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 32px;
+}
+
+.emptyCart {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.emptyIcon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.emptyTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.emptyText {
+  color: var(--text-light);
+  font-size: 15px;
+}
+
+.cartItems {
+  space-y: 16px;
+}
+
+.cartItem {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 16px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  transition: var(--transition);
+}
+
+.cartItem:hover {
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.itemImage {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--white);
+}
+
+.itemImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.itemInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.itemName {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.itemSpecs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+
+.itemPrice {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.itemControls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.quantityControls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--white);
+  border-radius: 8px;
+  padding: 4px;
+  border: 1px solid var(--border);
+}
+
+.quantityButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: var(--white);
+  color: var(--primary);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.quantityButton:hover:not(:disabled) {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.quantityButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quantity {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  min-width: 30px;
+  text-align: center;
+}
+
+.itemTotal {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.removeButton {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: var(--transition);
+}
+
+.removeButton:hover {
+  background: #fef2f2;
+}
+
+.orderSummary {
+  background: var(--white);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 24px 0;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.summaryRow:last-child {
+  border-bottom: none;
+  font-weight: 700;
+}
+
+.totalAmount {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.cartActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.clearButton {
+  background: none;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.clearButton:hover {
+  background: #ef4444;
+  color: var(--white);
+}
+
+.footer {
+  padding: 24px 32px;
+  border-top: 1px solid var(--border);
+  background: #f8fafc;
+}
+
+.whatsappButton {
+  width: 100%;
+  background: linear-gradient(135deg, #25d366, #128c7e);
+  color: var(--white);
+  border: none;
+  padding: 18px 24px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.whatsappButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+}
+
+.whatsappButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.securityBadges {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 12px;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .modal {
+    max-height: 95vh;
+    border-radius: 16px;
+  }
+  
+  .header {
+    padding: 24px 24px 0;
+  }
+  
+  .content {
+    padding: 20px 24px;
+  }
+  
+  .cartItem {
+    grid-template-columns: 60px 1fr;
+    gap: 12px;
+  }
+  
+  .itemControls {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+  }
+  
+  .securityBadges {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+}
