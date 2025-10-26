@@ -1,0 +1,378 @@
+/* components/Header.module.css */
+.header {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  position: relative;
+}
+
+/* Логотип */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.logo:hover {
+  transform: translateY(-1px);
+}
+
+.logoIcon {
+  font-size: 2rem;
+  background: linear-gradient(135deg, var(--secondary), #e6c34d);
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+.logoText {
+  display: flex;
+  flex-direction: column;
+}
+
+.logoTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--white);
+  margin: 0;
+  line-height: 1.2;
+  background: linear-gradient(135deg, #ffffff, #e2e8f0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.logoSubtitle {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* Навигация */
+.nav {
+  display: flex;
+  gap: 32px;
+  margin: 0 40px;
+}
+
+.navLink {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 15px;
+  padding: 8px 0;
+  position: relative;
+  transition: var(--transition);
+}
+
+.navLink:hover {
+  color: var(--white);
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--secondary);
+  transition: width 0.3s ease;
+}
+
+.navLink:hover::after {
+  width: 100%;
+}
+
+/* Действия */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+/* Корзина */
+.cartButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--white);
+  transition: var(--transition);
+  position: relative;
+  backdrop-filter: blur(10px);
+  border: none;
+  cursor: pointer;
+}
+
+.cartButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.cartIcon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.cartBadge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: var(--white);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+  line-height: 1;
+  border: 2px solid var(--primary-dark);
+}
+
+.cartText {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Телефон */
+.phoneButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, var(--secondary), #e6c34d);
+  color: var(--primary-dark);
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  transition: var(--transition);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+.phoneButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+}
+
+.phoneText {
+  white-space: nowrap;
+}
+
+/* Мобильное меню */
+.mobileMenuButton {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--white);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  transition: var(--transition);
+}
+
+.mobileMenuButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Мобильное меню */
+.mobileMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: slideDown 0.3s ease;
+}
+
+.mobileNav {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.mobileNavLink {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  padding: 16px 0;
+  font-weight: 500;
+  font-size: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: var(--transition);
+}
+
+.mobileNavLink:hover {
+  color: var(--white);
+  padding-left: 8px;
+}
+
+.mobileNavLink:last-child {
+  border-bottom: none;
+}
+
+.mobileActions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobileCartButton {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--white);
+  font-weight: 500;
+  transition: var(--transition);
+  border: none;
+  cursor: pointer;
+}
+
+.mobileCartButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.mobilePhoneButton {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, var(--secondary), #e6c34d);
+  color: var(--primary-dark);
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: 700;
+  transition: var(--transition);
+}
+
+.mobilePhoneButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+/* Анимации */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+  .nav {
+    gap: 24px;
+    margin: 0 24px;
+  }
+  
+  .phoneText {
+    display: none;
+  }
+  
+  .phoneButton {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+  
+  .nav {
+    display: none;
+  }
+  
+  .cartText {
+    display: none;
+  }
+  
+  .cartButton {
+    padding: 10px;
+  }
+  
+  .mobileMenuButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .phoneButton {
+    display: none;
+  }
+  
+  .logoTitle {
+    font-size: 1.3rem;
+  }
+  
+  .logoSubtitle {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerContent {
+    padding: 12px 0;
+  }
+  
+  .logoIcon {
+    font-size: 1.5rem;
+    padding: 8px;
+  }
+  
+  .logoTitle {
+    font-size: 1.1rem;
+  }
+  
+  .logoSubtitle {
+    display: none;
+  }
+  
+  .actions {
+    gap: 12px;
+  }
+}
