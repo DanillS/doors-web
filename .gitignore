@@ -8,7 +8,7 @@ out/
 dist/
 coverage/
 .nyc_output/" > .gitignore
-
+echo ".next/" >> .gitignore
 .env
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
