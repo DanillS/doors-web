@@ -1,7 +1,8 @@
 // app/layout.js
 'use client';
 import { FavoritesProvider } from '../context/FavoritesContext';
-import { CartProvider } from '../context/CartContext'; // Добавляем импорт
+import { CartProvider } from '../context/CartContext';
+import KeepAlive from '../components/KeepAlive'; // Добавляем импорт
 import './globals.css';
 
 export default function RootLayout({ children }) {
@@ -13,8 +14,9 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body>
-        <CartProvider> {/* Добавляем CartProvider */}
+        <CartProvider>
           <FavoritesProvider>
+            <KeepAlive /> {/* Добавляем компонент здесь */}
             {children}
           </FavoritesProvider>
         </CartProvider>
