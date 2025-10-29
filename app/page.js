@@ -7,6 +7,7 @@ import SearchFilter from "../components/SearchFilter";
 import DoorCard from "../components/DoorCard";
 import PaymentModal from "../components/PaymentModal";
 import Link from "next/link";
+import StoreQRCode from '../components/StoreQRCode';
 import "./globals.css";
 import "./Home.css";
 
@@ -253,13 +254,17 @@ export default function Home() {
               <div className="footer-contact-icon">📞</div>
               <span>+7 (950) 310-15-60</span>
             </a>
-            <a href="mailto:stepanovpg@mail.ru.ru" className="footer-contact">
+            <a href="mailto:stepanovpg@mail.ru" className="footer-contact">
               <div className="footer-contact-icon">✉️</div>
               <span>stepanovpg@mail.ru.ru</span>
             </a>
             <div className="footer-contact">
               <div className="footer-contact-icon">🕒</div>
               <span>Пн-Пт: 9:00-18:00</span>
+            </div>
+
+            <div className="qr-contact-section">
+              <StoreQRCode />
             </div>
           </div>
 

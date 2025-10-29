@@ -222,6 +222,8 @@ export default function AdminPanel() {
         <Link href="/admin/qr-codes" className={styles.qrCodesLink}>
         📱 QR-коды всех товаров
         </Link>
+
+        <StoreQRCode />
       </div>
 
       <div className={styles.adminContent}>

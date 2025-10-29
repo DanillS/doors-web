@@ -864,3 +864,41 @@
   background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
 }
+
+.adminActions {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.qrCodesLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.qrCodesLink:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Адаптивность для кнопок в заголовке */
+@media (max-width: 768px) {
+  .adminActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .qrCodesLink {
+    text-align: center;
+    justify-content: center;
+  }
+}
