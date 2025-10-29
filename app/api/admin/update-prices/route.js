@@ -6,16 +6,22 @@ export async function POST(request) {
     const body = await request.json()
     const { operation, percentage, category = 'all' } = body
 
-    console.log('🔄 Mass price update started')
+    console.log('🔄 Mass price update started:', { operation, percentage })
 
-    // Получаем все двери
+    if (!operation || !percentage || percentage <= 0) {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Неверные параметры операции' 
+      }, { status: 400 })
+    }
+
+    // 1. Получаем все двери из базы
     let query = supabase.from('Door').select('*')
-    
-    const { data: doors, error } = await query
+    const { data: doors, error: fetchError } = await query
 
-    if (error) {
-      console.error('❌ Supabase error:', error)
-      return NextResponse.json({ success: false, error: error.message }, { status: 500 })
+    if (fetchError) {
+      console.error('❌ Error fetching doors:', fetchError)
+      return NextResponse.json({ success: false, error: 'Ошибка получения данных' }, { status: 500 })
     }
 
     if (!doors || doors.length === 0) {
@@ -25,18 +31,19 @@ export async function POST(request) {
       }, { status: 404 })
     }
 
-    // Обновляем цены
+    // 2. Обновляем цены в базе данных
     let updatedCount = 0
     let errors = []
 
     for (const door of doors) {
-      const oldPrice = door.price
+      // ВАЖНО: используем base_price для расчетов!
+      const basePrice = door.base_price || door.price
       let newPrice
 
       if (operation === 'increase') {
-        newPrice = oldPrice * (1 + percentage / 100)
+        newPrice = basePrice * (1 + percentage / 100)
       } else if (operation === 'decrease') {
-        newPrice = oldPrice * (1 - percentage / 100)
+        newPrice = basePrice * (1 - percentage / 100)
       } else {
         return NextResponse.json({ success: false, error: 'Неизвестная операция' }, { status: 400 })
       }
@@ -44,6 +51,7 @@ export async function POST(request) {
       // Округляем до целых чисел
       newPrice = Math.round(newPrice)
 
+      // 3. Обновляем только price, base_price остается неизменной!
       const { error: updateError } = await supabase
         .from('Door')
         .update({ price: newPrice })
@@ -64,14 +72,15 @@ export async function POST(request) {
       }, { status: 500 })
     }
 
-    console.log(`✅ Updated ${updatedCount} doors`)
+    console.log(`✅ Updated ${updatedCount} doors in Supabase`)
     
     return NextResponse.json({
       success: true,
       message: `Цены успешно обновлены для ${updatedCount} товаров`,
       updatedCount: updatedCount,
       operation,
-      percentage
+      percentage,
+      note: 'Проценты рассчитываются относительно базовой цены'
     })
 
   } catch (error) {

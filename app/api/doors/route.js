@@ -1,4 +1,3 @@
-// app/api/doors/route.js
 import { NextResponse } from 'next/server'
 import { supabase } from '../../../lib/supabase'
 
@@ -9,12 +8,6 @@ export async function GET(request) {
 
     console.log('🔄 Fetching doors from Supabase...')
 
-    // Проверяем подключение к Supabase
-    if (!supabase) {
-      console.error('❌ Supabase client not initialized')
-      return NextResponse.json([], { status: 200 })
-    }
-
     let query = supabase.from('Door').select('*')
     
     if (!isAdmin) {
@@ -24,18 +17,15 @@ export async function GET(request) {
     const { data: doors, error } = await query.order('createdAt', { ascending: false })
 
     if (error) {
-      console.error('❌ Supabase error:', error.message)
-      // Возвращаем пустой массив вместо ошибки
-      return NextResponse.json([])
+      console.error('❌ Supabase error:', error)
+      throw error
     }
 
     console.log(`✅ Found ${doors?.length || 0} doors`)
     return NextResponse.json(doors || [])
 
   } catch (error) {
-    console.error('❌ Error fetching doors:', error.message)
-    
-    // В случае любой ошибки возвращаем пустой массив
+    console.error('❌ Error fetching doors:', error)
     return NextResponse.json([])
   }
 }
@@ -46,17 +36,13 @@ export async function POST(request) {
     
     console.log('🔄 Creating door in Supabase...')
 
-    if (!supabase) {
-      console.error('❌ Supabase client not initialized')
-      return NextResponse.json({ error: 'Database not available' }, { status: 500 })
-    }
-
     const { data: door, error } = await supabase
       .from('Door')
       .insert([
         {
           name: data.name,
           price: data.price,
+          base_price: data.price, // ← АВТОМАТИЧЕСКИ ДОБАВЛЯЕМ
           material: data.material,
           size: data.size,
           color: data.color,
@@ -71,16 +57,13 @@ export async function POST(request) {
       .select()
       .single()
 
-    if (error) {
-      console.error('❌ Supabase insert error:', error.message)
-      return NextResponse.json({ error: error.message }, { status: 500 })
-    }
+    if (error) throw error
 
     console.log('✅ Door created:', door.id)
     return NextResponse.json(door)
 
   } catch (error) {
-    console.error('❌ Error creating door:', error.message)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    console.error('❌ Error creating door:', error)
+    return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }

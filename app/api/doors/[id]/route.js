@@ -43,6 +43,7 @@ export async function PUT(request, { params }) {
       .update({
         name: data.name,
         price: data.price,
+        base_price: data.price, // ← АВТОМАТИЧЕСКИ ОБНОВЛЯЕМ
         material: data.material,
         size: data.size,
         color: data.color,
