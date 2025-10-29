@@ -1,7 +1,7 @@
 // components/AdminPanel.jsx
 'use client';
 import { useState, useEffect } from 'react';
-import { Plus, Trash2, Edit, Save, X, Image, Upload } from 'lucide-react';
+import { Plus, Trash2, Edit, Save, X, Image, Percent, ArrowUp, ArrowDown } from 'lucide-react';
 import styles from './AdminPanel.module.css';
 
 export default function AdminPanel() {
@@ -23,6 +23,16 @@ export default function AdminPanel() {
     isActive: true
   });
   const [newImageUrl, setNewImageUrl] = useState('');
+  
+  // Состояния для массового изменения цен
+  const [showMassUpdate, setShowMassUpdate] = useState(false);
+  const [massUpdateData, setMassUpdateData] = useState({
+    operation: 'increase',
+    percentage: 10,
+    category: 'all'
+  });
+  const [updatingPrices, setUpdatingPrices] = useState(false);
+  const [updateMessage, setUpdateMessage] = useState('');
 
   useEffect(() => {
     fetchDoors();
@@ -38,6 +48,58 @@ export default function AdminPanel() {
       setDoors([]);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Функция массового обновления цен
+  const handleMassPriceUpdate = async () => {
+    if (!massUpdateData.percentage || massUpdateData.percentage <= 0) {
+      setUpdateMessage({ type: 'error', text: 'Введите корректный процент' });
+      return;
+    }
+
+    setUpdatingPrices(true);
+    setUpdateMessage('');
+
+    try {
+      const response = await fetch('/api/admin/update-prices', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(massUpdateData),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setUpdateMessage({ 
+          type: 'success', 
+          text: result.message 
+        });
+        setMassUpdateData({
+          operation: 'increase',
+          percentage: 10,
+          category: 'all'
+        });
+        setShowMassUpdate(false);
+        
+        // Обновляем список дверей
+        fetchDoors();
+      } else {
+        setUpdateMessage({ 
+          type: 'error', 
+          text: result.error || 'Ошибка при обновлении цен' 
+        });
+      }
+    } catch (error) {
+      console.error('Error updating prices:', error);
+      setUpdateMessage({ 
+        type: 'error', 
+        text: 'Ошибка при обновлении цен' 
+      });
+    } finally {
+      setUpdatingPrices(false);
     }
   };
 
@@ -158,6 +220,114 @@ export default function AdminPanel() {
       </div>
 
       <div className={styles.adminContent}>
+        {/* Кнопка массового обновления цен */}
+        <div className={styles.massUpdateSection}>
+          <button
+            onClick={() => setShowMassUpdate(!showMassUpdate)}
+            className={styles.massUpdateToggle}
+          >
+            <Percent size={20} />
+            <span>Массовое изменение цен</span>
+          </button>
+
+          {showMassUpdate && (
+            <div className={styles.massUpdateForm}>
+              <h3 className={styles.massUpdateTitle}>Массовое изменение цен</h3>
+              
+              <div className={styles.massUpdateGrid}>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Операция</label>
+                  <select
+                    value={massUpdateData.operation}
+                    onChange={(e) => setMassUpdateData({...massUpdateData, operation: e.target.value})}
+                    className={styles.select}
+                  >
+                    <option value="increase">Увеличить цены</option>
+                    <option value="decrease">Уменьшить цены</option>
+                  </select>
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>
+                    Процент (%)
+                  </label>
+                  <input
+                    type="number"
+                    value={massUpdateData.percentage}
+                    onChange={(e) => setMassUpdateData({...massUpdateData, percentage: parseInt(e.target.value) || 0})}
+                    className={styles.input}
+                    min="1"
+                    max="1000"
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Категория</label>
+                  <select
+                    value={massUpdateData.category}
+                    onChange={(e) => setMassUpdateData({...massUpdateData, category: e.target.value})}
+                    className={styles.select}
+                  >
+                    <option value="all">Все двери</option>
+                  </select>
+                </div>
+              </div>
+
+              {updateMessage && (
+                <div className={`${styles.updateMessage} ${styles[updateMessage.type]}`}>
+                  {updateMessage.text}
+                </div>
+              )}
+
+              <div className={styles.massUpdateActions}>
+                <button
+                  onClick={handleMassPriceUpdate}
+                  disabled={updatingPrices}
+                  className={styles.massUpdateButton}
+                >
+                  {updatingPrices ? (
+                    <>
+                      <div className={styles.spinner}></div>
+                      <span>Обновление...</span>
+                    </>
+                  ) : (
+                    <>
+                      {massUpdateData.operation === 'increase' ? <ArrowUp size={18} /> : <ArrowDown size={18} />}
+                      <span>
+                        {massUpdateData.operation === 'increase' ? 'Увеличить' : 'Уменьшить'} на {massUpdateData.percentage}%
+                      </span>
+                    </>
+                  )}
+                </button>
+
+                <button
+                  onClick={() => {
+                    setShowMassUpdate(false);
+                    setUpdateMessage('');
+                  }}
+                  className={styles.massUpdateCancel}
+                >
+                  Отмена
+                </button>
+              </div>
+
+              <div className={styles.massUpdateInfo}>
+                <p>Будет обновлено: <strong>{doors.length} дверей</strong></p>
+                <p>
+                  Пример: цена 10,000 ₽ {massUpdateData.operation === 'increase' ? 'увеличится' : 'уменьшится'} до{' '}
+                  <strong>
+                    {Math.round(
+                      massUpdateData.operation === 'increase' 
+                        ? 10000 * (1 + massUpdateData.percentage / 100)
+                        : 10000 * (1 - massUpdateData.percentage / 100)
+                    ).toLocaleString()} ₽
+                  </strong>
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+
         {/* Форма создания/редактирования */}
         <div className={styles.formSection}>
           <div className={styles.formHeader}>

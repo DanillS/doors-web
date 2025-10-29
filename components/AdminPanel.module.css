@@ -6,8 +6,8 @@
 }
 
 .adminHeader {
-  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-  color: var(--white);
+  background: linear-gradient(135deg, #1a365d, #2d3748);
+  color: white;
   padding: 60px 40px 40px;
   margin-bottom: 40px;
 }
@@ -37,11 +37,186 @@
   gap: 40px;
 }
 
+/* Секция массового обновления цен */
+.massUpdateSection {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.massUpdateToggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.massUpdateToggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+}
+
+.massUpdateForm {
+  padding: 24px;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.massUpdateTitle {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 20px;
+}
+
+.massUpdateGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.massUpdateForm .formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.massUpdateForm .label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.massUpdateForm .input,
+.massUpdateForm .select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 15px;
+  background: white;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.massUpdateForm .select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+}
+
+.massUpdateForm .input:focus,
+.massUpdateForm .select:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+}
+
+.updateMessage {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.updateMessage.success {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.updateMessage.error {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.massUpdateActions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.massUpdateButton {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 50px;
+}
+
+.massUpdateButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+}
+
+.massUpdateButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.massUpdateCancel {
+  padding: 14px 20px;
+  background: white;
+  color: #4a5568;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.massUpdateCancel:hover {
+  background: #f7fafc;
+  border-color: #cbd5e0;
+}
+
+.massUpdateInfo {
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  font-size: 14px;
+  color: #718096;
+}
+
+.massUpdateInfo p {
+  margin: 8px 0;
+}
+
+.massUpdateInfo strong {
+  color: #2d3748;
+}
+
 /* Секция формы */
 .formSection {
-  background: var(--white);
+  background: white;
   border-radius: 20px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
@@ -50,14 +225,14 @@
   justify-content: space-between;
   align-items: center;
   padding: 32px 40px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid #e2e8f0;
   background: linear-gradient(135deg, #f8fafc, #edf2f7);
 }
 
 .formTitle {
   font-size: 1.8rem;
   font-weight: 600;
-  color: var(--text);
+  color: #2d3748;
   margin: 0;
 }
 
@@ -66,18 +241,18 @@
   align-items: center;
   gap: 8px;
   padding: 12px 24px;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  color: var(--white);
+  background: linear-gradient(135deg, #4299e1, #3182ce);
+  color: white;
   border: none;
   border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 0.3s ease;
 }
 
 .toggleFormButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(26, 54, 93, 0.3);
+  box-shadow: 0 8px 25px rgba(66, 153, 225, 0.3);
 }
 
 .form {
@@ -100,24 +275,25 @@
 .label {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text);
+  color: #2d3748;
 }
 
 .input, .textarea {
   width: 100%;
   padding: 14px 16px;
-  border: 2px solid var(--border);
+  border: 2px solid #e2e8f0;
   border-radius: 10px;
   font-size: 15px;
-  transition: var(--transition);
-  background: var(--white);
+  transition: all 0.3s ease;
+  background: white;
   font-family: inherit;
+  box-sizing: border-box;
 }
 
 .input:focus, .textarea:focus {
   outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.1);
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
 }
 
 .textarea {
@@ -131,12 +307,12 @@
   padding: 32px;
   background: #f8fafc;
   border-radius: 12px;
-  border: 1px solid var(--border);
+  border: 1px solid #e2e8f0;
 }
 
 .helpText {
   font-size: 14px;
-  color: var(--text-light);
+  color: #718096;
   margin-bottom: 20px;
   line-height: 1.5;
 }
@@ -156,18 +332,18 @@
   align-items: center;
   gap: 8px;
   padding: 12px 20px;
-  background: var(--primary);
-  color: var(--white);
+  background: #4299e1;
+  color: white;
   border: none;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 0.3s ease;
   white-space: nowrap;
 }
 
 .addImageButton:hover {
-  background: var(--primary-dark);
+  background: #3182ce;
   transform: translateY(-1px);
 }
 
@@ -178,7 +354,7 @@
 .imagesTitle {
   font-size: 16px;
   font-weight: 600;
-  color: var(--text);
+  color: #2d3748;
   margin-bottom: 16px;
 }
 
@@ -198,12 +374,12 @@
   aspect-ratio: 4/3;
   border-radius: 8px;
   overflow: hidden;
-  border: 2px solid var(--border);
-  transition: var(--transition);
+  border: 2px solid #e2e8f0;
+  transition: all 0.3s ease;
 }
 
 .imagePreview:hover {
-  border-color: var(--primary);
+  border-color: #4299e1;
   transform: translateY(-2px);
 }
 
@@ -222,7 +398,7 @@
   justify-content: space-between;
   padding: 8px;
   opacity: 0;
-  transition: var(--transition);
+  transition: all 0.3s ease;
 }
 
 .imagePreview:hover .imageOverlay {
@@ -230,10 +406,10 @@
 }
 
 .imageNumber {
-  color: var(--white);
+  color: white;
   font-size: 12px;
   font-weight: 600;
-  background: var(--primary);
+  background: #4299e1;
   padding: 2px 6px;
   border-radius: 4px;
   align-self: flex-start;
@@ -251,18 +427,18 @@
   justify-content: center;
   width: 24px;
   height: 24px;
-  background: var(--white);
+  background: white;
   border: none;
   border-radius: 4px;
-  color: var(--text);
+  color: #2d3748;
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 0.3s ease;
   font-size: 12px;
 }
 
 .imageAction:hover {
-  background: var(--primary);
-  color: var(--white);
+  background: #4299e1;
+  color: white;
 }
 
 /* Чекбокс */
@@ -277,7 +453,7 @@
 .checkbox {
   width: 18px;
   height: 18px;
-  border: 2px solid var(--border);
+  border: 2px solid #e2e8f0;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -288,7 +464,7 @@
   gap: 16px;
   margin-top: 32px;
   padding-top: 24px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid #e2e8f0;
 }
 
 .submitButton {
@@ -297,12 +473,12 @@
   gap: 8px;
   padding: 14px 28px;
   background: linear-gradient(135deg, #10b981, #059669);
-  color: var(--white);
+  color: white;
   border: none;
   border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 0.3s ease;
 }
 
 .submitButton:hover {
@@ -315,25 +491,25 @@
   align-items: center;
   gap: 8px;
   padding: 14px 28px;
-  background: var(--white);
-  color: var(--text);
-  border: 2px solid var(--border);
+  background: white;
+  color: #4a5568;
+  border: 2px solid #e2e8f0;
   border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 0.3s ease;
 }
 
 .cancelButton:hover {
-  background: var(--border);
+  background: #f7fafc;
   transform: translateY(-1px);
 }
 
 /* Секция списка дверей */
 .doorsSection {
-  background: var(--white);
+  background: white;
   border-radius: 20px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
@@ -342,14 +518,14 @@
   justify-content: space-between;
   align-items: center;
   padding: 32px 40px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid #e2e8f0;
   background: linear-gradient(135deg, #f8fafc, #edf2f7);
 }
 
 .sectionTitle {
   font-size: 1.8rem;
   font-weight: 600;
-  color: var(--text);
+  color: #2d3748;
   margin: 0;
 }
 
@@ -361,11 +537,11 @@
 .stat {
   font-size: 14px;
   font-weight: 500;
-  color: var(--text-light);
+  color: #718096;
   padding: 6px 12px;
-  background: var(--white);
+  background: white;
   border-radius: 6px;
-  border: 1px solid var(--border);
+  border: 1px solid #e2e8f0;
 }
 
 .doorsGrid {
@@ -376,17 +552,17 @@
 }
 
 .doorCard {
-  background: var(--white);
-  border: 1px solid var(--border);
+  background: white;
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
   overflow: hidden;
-  transition: var(--transition);
-  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .doorCard:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-hover);
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
 }
 
 .doorImage {
@@ -412,7 +588,7 @@
 
 .badgeActive {
   background: #10b981;
-  color: var(--white);
+  color: white;
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 11px;
@@ -421,7 +597,7 @@
 
 .badgeInactive {
   background: #6b7280;
-  color: var(--white);
+  color: white;
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 11px;
@@ -429,8 +605,8 @@
 }
 
 .badgePhotos {
-  background: var(--primary);
-  color: var(--white);
+  background: #4299e1;
+  color: white;
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 11px;
@@ -447,7 +623,7 @@
 .doorName {
   font-size: 16px;
   font-weight: 600;
-  color: var(--text);
+  color: #2d3748;
   margin-bottom: 8px;
   line-height: 1.4;
 }
@@ -455,7 +631,7 @@
 .doorPrice {
   font-size: 18px;
   font-weight: 700;
-  color: var(--primary);
+  color: #4299e1;
   margin-bottom: 12px;
 }
 
@@ -464,7 +640,7 @@
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  color: var(--text-light);
+  color: #718096;
   margin-bottom: 16px;
   flex-wrap: wrap;
 }
@@ -480,18 +656,18 @@
   align-items: center;
   gap: 6px;
   padding: 10px 16px;
-  background: var(--primary);
-  color: var(--white);
+  background: #4299e1;
+  color: white;
   border: none;
   border-radius: 6px;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 0.3s ease;
 }
 
 .editButton:hover {
-  background: var(--primary-dark);
+  background: #3182ce;
   transform: translateY(-1px);
 }
 
@@ -501,13 +677,13 @@
   gap: 6px;
   padding: 10px 12px;
   background: #ef4444;
-  color: var(--white);
+  color: white;
   border: none;
   border-radius: 6px;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 0.3s ease;
 }
 
 .deleteButton:hover {
@@ -528,8 +704,8 @@
 .loading .spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid var(--border);
-  border-left: 4px solid var(--primary);
+  border: 4px solid #e2e8f0;
+  border-left: 4px solid #4299e1;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -548,12 +724,12 @@
 .emptyTitle {
   font-size: 20px;
   font-weight: 600;
-  color: var(--text);
+  color: #2d3748;
   margin-bottom: 8px;
 }
 
 .emptyText {
-  color: var(--text-light);
+  color: #718096;
   font-size: 15px;
 }
 
@@ -616,6 +792,19 @@
   .formActions {
     flex-direction: column;
   }
+  
+  .massUpdateGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .massUpdateActions {
+    flex-direction: column;
+  }
+  
+  .stats {
+    flex-direction: column;
+    gap: 8px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -638,7 +827,7 @@
 
 .inactiveDoor {
   opacity: 0.7;
-  border: 1px dashed #ccc;
+  border: 1px dashed #cbd5e0;
   background-color: #f9f9f9;
 }
 
