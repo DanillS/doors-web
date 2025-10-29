@@ -1,9 +1,11 @@
 // components/AdminPanel.jsx
 'use client';
 import { useState, useEffect } from 'react';
-import { Plus, Trash2, Edit, Save, X, Image, Percent, ArrowUp, ArrowDown } from 'lucide-react';
+import { Plus, Trash2, Edit, Save, X, Image, Percent, ArrowUp, ArrowDown, QrCode } from 'lucide-react';
 import styles from './AdminPanel.module.css';
 import QRCodeGenerator from './QRCodeGenerator';
+import Link from 'next/link'
+import StoreQRCode from '../components/StoreQRCode'
 
 export default function AdminPanel() {
   const [doors, setDoors] = useState([]);
@@ -216,14 +218,21 @@ export default function AdminPanel() {
   return (
     <div className={styles.adminContainer}>
       <div className={styles.adminHeader}>
-        <h1 className={styles.adminTitle}>Панель управления</h1>
-        <p className={styles.adminSubtitle}>Управление каталогом элитных дверей</p>
-
-        <Link href="/admin/qr-codes" className={styles.qrCodesLink}>
-        📱 QR-коды всех товаров
-        </Link>
-
-        <StoreQRCode />
+        <div className={styles.headerContent}>
+            <div className={styles.headerText}>
+            <h1 className={styles.adminTitle}>Панель управления</h1>
+            <p className={styles.adminSubtitle}>Управление каталогом элитных дверей</p>
+          </div>
+        
+          <div className={styles.headerActions}>
+            <Link href="/admin/qr-codes" className={styles.qrCodesLink}>
+              <QrCode size={18} />
+              <span>QR-коды всех товаров</span>
+            </Link>
+            
+            <StoreQRCode />
+          </div>
+        </div>
       </div>
 
       <div className={styles.adminContent}>
@@ -624,17 +633,7 @@ export default function AdminPanel() {
                       <Edit size={16} />
                       <span>Редактировать</span>
                     </button>
-
-                     <QRCodeGenerator door={door} />
   
-                    <button
-                      onClick={() => deleteDoor(door.id)}
-                      className={styles.deleteButton}
-                    >
-                      <Trash2 size={16} />
-                      <span>Удалить</span>
-                    </button>
-                    
                     <button
                       onClick={() => deleteDoor(door.id)}
                       className={styles.deleteButton}

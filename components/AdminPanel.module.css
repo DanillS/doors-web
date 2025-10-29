@@ -860,11 +860,6 @@
   margin-top: 10px;
 }
 
-.qrCodesLink:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
-}
-
 .adminActions {
   display: flex;
   gap: 15px;
@@ -885,11 +880,6 @@
   transition: all 0.3s ease;
 }
 
-.qrCodesLink:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
-}
-
 /* Адаптивность для кнопок в заголовке */
 @media (max-width: 768px) {
   .adminActions {
@@ -900,5 +890,159 @@
   .qrCodesLink {
     text-align: center;
     justify-content: center;
+  }
+}
+
+/* Стили для заголовка админ-панели */
+.adminHeader {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  color: var(--white);
+  padding: 40px;
+  margin-bottom: 40px;
+}
+
+.headerContent {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+}
+
+.headerText {
+  flex: 1;
+}
+
+.adminTitle {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #ffffff, #e2e8f0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.adminSubtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  font-weight: 400;
+  margin: 0;
+}
+
+.headerActions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 250px;
+}
+
+/* Стили для кнопки QR-кодов всех товаров */
+.qrCodesLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 14px;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  justify-content: center;
+}
+
+.qrCodesLink:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+  color: white;
+  text-decoration: none;
+}
+
+/* Стили для StoreQRCode в хедере */
+.headerActions .storeQRContainer {
+  display: block;
+}
+
+.headerActions .toggleButton {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 14px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  width: 100%;
+  justify-content: center;
+}
+
+.headerActions .toggleButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+  .headerContent {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+  
+  .headerActions {
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .qrCodesLink,
+  .headerActions .toggleButton {
+    flex: 1;
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .adminHeader {
+    padding: 30px 20px;
+  }
+  
+  .adminTitle {
+    font-size: 2.2rem;
+  }
+  
+  .headerActions {
+    flex-direction: column;
+  }
+  
+  .qrCodesLink,
+  .headerActions .toggleButton {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .adminHeader {
+    padding: 25px 15px;
+  }
+  
+  .adminTitle {
+    font-size: 1.8rem;
+  }
+  
+  .adminSubtitle {
+    font-size: 1rem;
   }
 }

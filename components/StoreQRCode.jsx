@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import QRCode from 'qrcode';
 import { Download, Copy, QrCode, Home, Phone, Mail } from 'lucide-react';
-import styles from './StoreQRCode.module.css';
+import './StoreQRCode.css';
 
 export default function StoreQRCode() {
   const [showQR, setShowQR] = useState(false);
@@ -27,13 +27,13 @@ export default function StoreQRCode() {
     },
     email: {
       name: 'Электронная почта',
-      url: 'email:stepanovpg@mail.ru',
+      url: 'mailto:stepanovpg@mail.ru',
       icon: <Mail size={20} />
     }
   };
 
   useEffect(() => {
-    if (showQR) {
+    if (showQR && pages[selectedPage].url) {
       generateQRCode();
     }
   }, [showQR, selectedPage]);
@@ -82,27 +82,27 @@ export default function StoreQRCode() {
   };
 
   return (
-    <div className={styles.storeQRContainer}>
+    <div className="storeQRContainer">
       <button 
         onClick={() => setShowQR(!showQR)}
-        className={styles.toggleButton}
+        className="toggleButton"
       >
         <QrCode size={18} />
         <span>QR-коды магазина</span>
       </button>
 
       {showQR && (
-        <div className={styles.qrModal}>
-          <div className={styles.qrContent}>
+        <div className="qrModal">
+          <div className="qrContent">
             <h2>QR-коды магазина Elite Doors</h2>
             
             {/* Выбор страницы */}
-            <div className={styles.pageSelector}>
+            <div className="pageSelector">
               {Object.entries(pages).map(([key, page]) => (
                 <button
                   key={key}
                   onClick={() => setSelectedPage(key)}
-                  className={`${styles.pageButton} ${selectedPage === key ? styles.active : ''}`}
+                  className={`pageButton ${selectedPage === key ? 'active' : ''}`}
                 >
                   {page.icon}
                   <span>{page.name}</span>
@@ -111,24 +111,24 @@ export default function StoreQRCode() {
             </div>
 
             {/* QR-код */}
-            <div className={styles.qrSection}>
+            <div className="qrSection">
               <h3>{pages[selectedPage].name}</h3>
               
-              <div className={styles.qrCode}>
+              <div className="qrCode">
                 {qrDataUrl ? (
                   <img 
                     src={qrDataUrl} 
                     alt={`QR Code for ${pages[selectedPage].name}`}
-                    className={styles.qrImage}
+                    className="qrImage"
                   />
                 ) : (
-                  <div className={styles.loading}>Генерация QR-кода...</div>
+                  <div className="loading">Генерация QR-кода...</div>
                 )}
               </div>
               
-              <div className={styles.urlInfo}>
-                <p className={styles.url}>{pages[selectedPage].url}</p>
-                <p className={styles.note}>
+              <div className="urlInfo">
+                <p className="url">{pages[selectedPage].url}</p>
+                <p className="note">
                   {selectedPage === 'phone' && 'Наведите камеру чтобы позвонить'}
                   {selectedPage === 'email' && 'Наведите камеру чтобы написать письмо'}
                   {(selectedPage === 'home' || selectedPage === 'catalog') && 'Наведите камеру чтобы перейти на сайт'}
@@ -137,24 +137,24 @@ export default function StoreQRCode() {
             </div>
             
             {/* Действия */}
-            <div className={styles.actions}>
+            <div className="actions">
               <button 
                 onClick={downloadQRCode} 
-                className={styles.downloadButton}
+                className="downloadButton"
                 disabled={!qrDataUrl}
               >
                 <Download size={16} />
                 <span>Скачать QR</span>
               </button>
               
-              <button onClick={copyLink} className={styles.copyButton}>
+              <button onClick={copyLink} className="copyButton">
                 <Copy size={16} />
                 <span>Копировать ссылку</span>
               </button>
               
               <button 
                 onClick={() => setShowQR(false)} 
-                className={styles.closeButton}
+                className="closeButton"
               >
                 Закрыть
               </button>
