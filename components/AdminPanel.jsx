@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Plus, Trash2, Edit, Save, X, Image, Percent, ArrowUp, ArrowDown } from 'lucide-react';
 import styles from './AdminPanel.module.css';
+import QRCodeGenerator from './QRCodeGenerator';
 
 export default function AdminPanel() {
   const [doors, setDoors] = useState([]);
@@ -217,6 +218,10 @@ export default function AdminPanel() {
       <div className={styles.adminHeader}>
         <h1 className={styles.adminTitle}>Панель управления</h1>
         <p className={styles.adminSubtitle}>Управление каталогом элитных дверей</p>
+
+        <Link href="/admin/qr-codes" className={styles.qrCodesLink}>
+        📱 QR-коды всех товаров
+        </Link>
       </div>
 
       <div className={styles.adminContent}>
@@ -616,6 +621,16 @@ export default function AdminPanel() {
                     >
                       <Edit size={16} />
                       <span>Редактировать</span>
+                    </button>
+
+                     <QRCodeGenerator door={door} />
+  
+                    <button
+                      onClick={() => deleteDoor(door.id)}
+                      className={styles.deleteButton}
+                    >
+                      <Trash2 size={16} />
+                      <span>Удалить</span>
                     </button>
                     
                     <button

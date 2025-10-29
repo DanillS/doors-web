@@ -9,6 +9,7 @@ import Header from '../../../components/Header';
 import PaymentModal from '../../../components/PaymentModal';
 import Link from 'next/link';
 import styles from './DoorPage.module.css';
+import QRCodeGenerator from '../../../components/QRCodeGenerator';
 
 export default function DoorPage() {
   const params = useParams();
@@ -289,6 +290,8 @@ export default function DoorPage() {
               <span>Бесплатная консультация</span>
             </a>
           </div>
+
+          <QRCodeGenerator door={door} />
 
           {/* Преимущества */}
           <div className={styles.features}>
