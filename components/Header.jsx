@@ -2,12 +2,13 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import { ShoppingCart, Phone, Menu, X } from 'lucide-react';
+import { ShoppingCart, Phone, Menu, X, MessageCircle } from 'lucide-react'; // Добавлен MessageCircle
 import styles from './Header.module.css';
 
 export default function Header({ cartItemsCount = 0, onCartClick }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const phoneNumber = '+79503101560';
+  const phoneNumber = '79503101560'; // Без + для WhatsApp
+  const formattedPhoneNumber = '+7 (950) 310-15-60'; // Для отображения
 
   return (
     <header className={styles.header}>
@@ -44,13 +45,15 @@ export default function Header({ cartItemsCount = 0, onCartClick }) {
               <span className={styles.cartText}>Корзина</span>
             </button>
 
-            {/* Телефон */}
+            {/* WhatsApp вместо телефона */}
             <a 
-              href={`tel:${phoneNumber}`}
-              className={styles.phoneButton}
+              href={`https://wa.me/${phoneNumber}`}
+              className={styles.whatsappButton}
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <Phone size={18} />
-              <span className={styles.phoneText}>+7 (950) 310-15-60</span>
+              <MessageCircle size={18} />
+              <span className={styles.whatsappText}>WhatsApp</span>
             </a>
 
             {/* Мобильное меню */}
@@ -78,13 +81,16 @@ export default function Header({ cartItemsCount = 0, onCartClick }) {
                   <ShoppingCart size={20} />
                   <span>Корзина ({cartItemsCount})</span>
                 </button>
+                {/* WhatsApp в мобильном меню */}
                 <a 
-                  href={`tel:${phoneNumber}`}
-                  className={styles.mobilePhoneButton}
+                  href={`https://wa.me/${phoneNumber}`}
+                  className={styles.mobileWhatsappButton}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <Phone size={18} />
-                  <span>Позвонить</span>
+                  <MessageCircle size={18} />
+                  <span>Написать в WhatsApp</span>
                 </a>
               </div>
             </nav>

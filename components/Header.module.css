@@ -166,25 +166,6 @@
 }
 
 /* Телефон */
-.phoneButton {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
-  background: linear-gradient(135deg, var(--secondary), #e6c34d);
-  color: var(--primary-dark);
-  text-decoration: none;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 14px;
-  transition: var(--transition);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-}
-
-.phoneButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
-}
 
 .phoneText {
   white-space: nowrap;
@@ -272,24 +253,6 @@
   background: rgba(255, 255, 255, 0.15);
 }
 
-.mobilePhoneButton {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
-  background: linear-gradient(135deg, var(--secondary), #e6c34d);
-  color: var(--primary-dark);
-  text-decoration: none;
-  border-radius: 10px;
-  font-weight: 700;
-  transition: var(--transition);
-}
-
-.mobilePhoneButton:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-}
-
 /* Анимации */
 @keyframes slideDown {
   from {
@@ -375,4 +338,51 @@
   .actions {
     gap: 12px;
   }
+}
+
+/* components/Header.module.css */
+
+/* WhatsApp кнопка */
+.whatsappButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  transition: var(--transition);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+.whatsappButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+  background: linear-gradient(135deg, #128C7E, #25D366);
+}
+
+.whatsappText {
+  white-space: nowrap;
+}
+
+/* Мобильная WhatsApp кнопка */
+.mobileWhatsappButton {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: 700;
+  transition: var(--transition);
+}
+
+.mobileWhatsappButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
 }

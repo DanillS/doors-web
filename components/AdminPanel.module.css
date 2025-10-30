@@ -8,24 +8,85 @@
 .adminHeader {
   background: linear-gradient(135deg, #1a365d, #2d3748);
   color: white;
-  padding: 60px 40px 40px;
+  padding: 40px;
   margin-bottom: 40px;
 }
 
+.headerContent {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.headerText {
+  flex: 1;
+  min-width: 0; /* Добавил это для правильного обрезания текста */
+}
+
 .adminTitle {
-  font-size: 3rem;
+  font-size: 2.5rem; /* Уменьшил размер шрифта */
   font-weight: 700;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   background: linear-gradient(135deg, #ffffff, #e2e8f0);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  line-height: 1.2;
+  word-wrap: break-word; /* Добавил перенос слов */
 }
 
 .adminSubtitle {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   opacity: 0.9;
   font-weight: 400;
+  margin: 0;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-shrink: 0;
+}
+
+/* ОДИНАКОВЫЕ СТИЛИ ДЛЯ ОБЕИХ КНОПОК QR-КОДОВ - УБРАЛ ДУБЛИ */
+.qrCodesLink,
+.toggleButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  text-decoration: none;
+  white-space: nowrap;
+  height: 44px;
+  box-sizing: border-box;
+  justify-content: center;
+  min-width: 180px;
+}
+
+.qrCodesLink {
+  background: linear-gradient(135deg, #10b981, #059669);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.toggleButton {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.qrCodesLink:hover,
+.toggleButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .adminContent {
@@ -37,7 +98,7 @@
   gap: 40px;
 }
 
-/* Секция массового обновления цен */
+/* ОСТАЛЬНЫЕ СТИЛИ БЕЗ ИЗМЕНЕНИЙ */
 .massUpdateSection {
   background: white;
   border-radius: 20px;
@@ -212,7 +273,6 @@
   color: #2d3748;
 }
 
-/* Секция формы */
 .formSection {
   background: white;
   border-radius: 20px;
@@ -301,7 +361,6 @@
   min-height: 100px;
 }
 
-/* Секция изображений */
 .imagesSection {
   margin: 32px 0;
   padding: 32px;
@@ -441,7 +500,6 @@
   color: white;
 }
 
-/* Чекбокс */
 .checkboxLabel {
   display: flex;
   align-items: center;
@@ -458,7 +516,6 @@
   cursor: pointer;
 }
 
-/* Действия формы */
 .formActions {
   display: flex;
   gap: 16px;
@@ -505,7 +562,6 @@
   transform: translateY(-1px);
 }
 
-/* Секция списка дверей */
 .doorsSection {
   background: white;
   border-radius: 20px;
@@ -691,7 +747,6 @@
   transform: translateY(-1px);
 }
 
-/* Состояния загрузки и пустые состояния */
 .loading {
   display: flex;
   flex-direction: column;
@@ -738,6 +793,27 @@
   100% { transform: rotate(360deg); }
 }
 
+.inactiveDoor {
+  opacity: 0.7;
+  border: 1px dashed #cbd5e0;
+  background-color: #f9f9f9;
+}
+
+.inactiveDoor .doorName,
+.inactiveDoor .doorPrice,
+.inactiveDoor .doorSpecs {
+  color: #666;
+}
+
+.badgeInactive {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
 /* Адаптивность */
 @media (max-width: 1024px) {
   .formGrid {
@@ -751,11 +827,28 @@
 
 @media (max-width: 768px) {
   .adminHeader {
-    padding: 40px 20px;
+    padding: 30px 20px;
   }
   
   .adminTitle {
-    font-size: 2.2rem;
+    font-size: 2rem;
+  }
+  
+  .headerContent {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+  
+  .headerActions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .qrCodesLink,
+  .toggleButton {
+    width: 100%;
+    min-width: auto;
   }
   
   .adminContent {
@@ -809,7 +902,7 @@
 
 @media (max-width: 480px) {
   .adminHeader {
-    padding: 30px 15px;
+    padding: 25px 15px;
   }
   
   .adminTitle {
@@ -823,226 +916,10 @@
   .imagesGrid {
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   }
-}
-
-.inactiveDoor {
-  opacity: 0.7;
-  border: 1px dashed #cbd5e0;
-  background-color: #f9f9f9;
-}
-
-.inactiveDoor .doorName,
-.inactiveDoor .doorPrice,
-.inactiveDoor .doorSpecs {
-  color: #666;
-}
-
-.badgeInactive {
-  background: #fee2e2;
-  color: #dc2626;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.qrCodesLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  margin-top: 10px;
-}
-
-.adminActions {
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-  margin-top: 15px;
-}
-
-.qrCodesLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-/* Адаптивность для кнопок в заголовке */
-@media (max-width: 768px) {
-  .adminActions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .qrCodesLink {
-    text-align: center;
-    justify-content: center;
-  }
-}
-
-/* Стили для заголовка админ-панели */
-.adminHeader {
-  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-  color: var(--white);
-  padding: 40px;
-  margin-bottom: 40px;
-}
-
-.headerContent {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 30px;
-}
-
-.headerText {
-  flex: 1;
-}
-
-.adminTitle {
-  font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 12px;
-  background: linear-gradient(135deg, #ffffff, #e2e8f0);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.adminSubtitle {
-  font-size: 1.2rem;
-  opacity: 0.9;
-  font-weight: 400;
-  margin: 0;
-}
-
-.headerActions {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-width: 250px;
-}
-
-/* Стили для кнопки QR-кодов всех товаров */
-.qrCodesLink {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 20px;
-  background: linear-gradient(135deg, #10b981, #059669);
-  color: white;
-  text-decoration: none;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 14px;
-  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-  border: none;
-  cursor: pointer;
-  text-align: center;
-  justify-content: center;
-}
-
-.qrCodesLink:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
-  color: white;
-  text-decoration: none;
-}
-
-/* Стили для StoreQRCode в хедере */
-.headerActions .storeQRContainer {
-  display: block;
-}
-
-.headerActions .toggleButton {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 20px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 14px;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-  width: 100%;
-  justify-content: center;
-}
-
-.headerActions .toggleButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-}
-
-/* Адаптивность */
-@media (max-width: 1024px) {
-  .headerContent {
-    flex-direction: column;
-    text-align: center;
-    gap: 20px;
-  }
-  
-  .headerActions {
-    flex-direction: row;
-    width: 100%;
-    justify-content: center;
-  }
   
   .qrCodesLink,
-  .headerActions .toggleButton {
-    flex: 1;
-    min-width: 200px;
-  }
-}
-
-@media (max-width: 768px) {
-  .adminHeader {
-    padding: 30px 20px;
-  }
-  
-  .adminTitle {
-    font-size: 2.2rem;
-  }
-  
-  .headerActions {
-    flex-direction: column;
-  }
-  
-  .qrCodesLink,
-  .headerActions .toggleButton {
-    width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .adminHeader {
-    padding: 25px 15px;
-  }
-  
-  .adminTitle {
-    font-size: 1.8rem;
-  }
-  
-  .adminSubtitle {
-    font-size: 1rem;
+  .toggleButton {
+    padding: 10px 16px;
+    font-size: 13px;
   }
 }
