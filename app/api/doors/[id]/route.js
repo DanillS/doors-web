@@ -52,7 +52,8 @@ export async function PUT(request, { params }) {
         image: data.image,
         images: data.images || [],
         description: data.description,
-        isActive: data.isActive
+        isActive: data.isActive,
+        updatedAt: new Date().toISOString()
       })
       .eq('id', id)
       .select()

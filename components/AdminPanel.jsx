@@ -15,14 +15,14 @@ export default function AdminPanel() {
   const [formData, setFormData] = useState({
     name: '',
     price: '',
-    material: '',
+    material: 'Производитель',
     size: '',
     color: '',
     image: '',
     images: [],
     glass: '',
     tearType: '',
-    description: '',
+    description: 'Количество полотен',
     isActive: true
   });
   const [newImageUrl, setNewImageUrl] = useState('');
@@ -436,6 +436,28 @@ export default function AdminPanel() {
                 </div>
 
                 <div className={styles.formGroup}>
+                  <label className={styles.label}>Производитель *</label>
+                  <input
+                    type="text"
+                    value={formData.material}
+                    onChange={(e) => setFormData({...formData, material: e.target.value})}
+                    className={styles.input}
+                    required
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Количество полотен *</label>
+                  <input
+                    type="text"
+                    value={formData.description}
+                    onChange={(e) => setFormData({...formData, description: e.target.value})}
+                    className={styles.input}
+                    required
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
                   <label className={styles.label}>Основное фото (URL) *</label>
                   <input
                     type="text"
@@ -531,7 +553,7 @@ export default function AdminPanel() {
                 )}
               </div>
 
-              <div className={styles.formGroup}>
+              {/* <div className={styles.formGroup}>
                 <label className={styles.label}>Описание</label>
                 <textarea
                   value={formData.description}
@@ -539,7 +561,7 @@ export default function AdminPanel() {
                   className={styles.textarea}
                   rows="4"
                 />
-              </div>
+              </div> */}
 
               <div className={styles.formGroup}>
                 <label className={styles.checkboxLabel}>

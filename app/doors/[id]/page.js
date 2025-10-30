@@ -232,7 +232,15 @@ export default function DoorPage() {
               </div>
               <div className={styles.specItem}>
                 <span className={styles.specLabel}>Стекло:</span>
-                <span className={styles.specValue}>Без стекла</span>
+                <span className={styles.specValue}>{door.glass}</span>
+              </div>
+              <div className={styles.specItem}>
+                <span className={styles.specLabel}>Производитель:</span>
+                <span className={styles.specValue}>{door.material}</span>
+              </div>
+              <div className={styles.specItem}>
+                <span className={styles.specLabel}>Количество полотен:</span>
+                <span className={styles.specValue}>{door.description}</span>
               </div>
             </div>
           </div>
@@ -314,7 +322,7 @@ export default function DoorPage() {
       {/* Детальная информация */}
       <div className={styles.detailsSection}>
         <div className={styles.tabs}>
-          <button 
+          {/* <button 
             className={`${styles.tab} ${activeTab === 'description' ? styles.active : ''}`}
             onClick={() => setActiveTab('description')}
           >
@@ -325,7 +333,7 @@ export default function DoorPage() {
             onClick={() => setActiveTab('specifications')}
           >
             Характеристики
-          </button>
+          </button> */}
           <button 
             className={`${styles.tab} ${activeTab === 'delivery' ? styles.active : ''}`}
             onClick={() => setActiveTab('delivery')}
@@ -335,14 +343,14 @@ export default function DoorPage() {
         </div>
 
         <div className={styles.tabContent}>
-          {activeTab === 'description' && (
+          {/* {activeTab === 'description' && (
             <div className={styles.description}>
               <h3>О товаре</h3>
               <p>{door.description}</p>
             </div>
-          )}
+          )} */}
 
-          {activeTab === 'specifications' && (
+          {/* {activeTab === 'specifications' && (
             <div className={styles.specifications}>
               <h3>Технические характеристики</h3>
               <div className={styles.specsTable}>
@@ -368,7 +376,7 @@ export default function DoorPage() {
                 </div>
               </div>
             </div>
-          )}
+          )} */}
 
           {activeTab === 'delivery' && (
             <div className={styles.delivery}>

@@ -36,6 +36,8 @@ export async function POST(request) {
     
     console.log('🔄 Creating door in Supabase...')
 
+    const now = new Date().toISOString()
+
     const { data: door, error } = await supabase
       .from('Door')
       .insert([
@@ -48,10 +50,12 @@ export async function POST(request) {
           color: data.color,
           image: data.image || '',
           images: data.images || [],
-          description: data.description || '',
+          description: data.description || 'Количество полотен',
           glass: data.glass || 'Без стекла',
           tearType: data.tearType || 'Распашная',
-          isActive: data.isActive !== undefined ? data.isActive : true
+          isActive: data.isActive !== undefined ? data.isActive : true,
+          createdAt: now,
+          updatedAt: now
         }
       ])
       .select()
