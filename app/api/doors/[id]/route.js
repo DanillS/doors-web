@@ -53,7 +53,8 @@ export async function PUT(request, { params }) {
         images: data.images || [],
         description: data.description,
         isActive: data.isActive,
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
+        colors: data.colors || []
       })
       .eq('id', id)
       .select()

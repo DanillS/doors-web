@@ -1,3 +1,4 @@
+// components/DoorCard.jsx
 'use client';
 import { useState } from 'react';
 import { ShoppingCart, Plus, Minus, ArrowRight } from 'lucide-react';
@@ -8,11 +9,42 @@ import styles from './DoorCard.module.css';
 export default function DoorCard({ door, onAddToCart }) {
   const [showSliderModal, setShowSliderModal] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [selectedColor, setSelectedColor] = useState(null);
+
+  // Автоматически выбираем первый цвет при загрузке
+  useState(() => {
+    if (door.colors && door.colors.length > 0) {
+      setSelectedColor(door.colors[0]);
+    }
+  });
+
+  const handleColorChange = (color) => {
+    setSelectedColor(color);
+  };
+
+  // Получаем фото дверей для выбранного цвета
+  const getCurrentImages = () => {
+    if (selectedColor && selectedColor.images && selectedColor.images.length > 0) {
+      return selectedColor.images;
+    }
+    
+    // Если нет цветов или фото для цвета, используем старые поля
+    if (door.images && door.images.length > 0) {
+      return door.images;
+    }
+    
+    return door.image ? [door.image] : [];
+  };
 
   const handleAddToCart = () => {
     if (onAddToCart && typeof onAddToCart === 'function') {
-      onAddToCart(door, quantity);
-      setQuantity(1); // Сбрасываем количество после добавления
+      const cartItem = {
+        ...door,
+        selectedColor: selectedColor,
+        quantity: quantity
+      };
+      onAddToCart(cartItem, quantity);
+      setQuantity(1);
     }
   };
 
@@ -24,32 +56,12 @@ export default function DoorCard({ door, onAddToCart }) {
     setQuantity(prev => prev > 1 ? prev - 1 : 1);
   };
 
-  // ОБНОВЛЕННЫЙ КОД: объединяем основное фото и дополнительные фото
-  const doorImages = [];
-
-  // Добавляем основное фото, если оно есть
-  if (door.image && door.image.trim() !== '') {
-    doorImages.push(door.image);
-  }
-
-  // Добавляем дополнительные фото, если они есть
-  if (door.images && Array.isArray(door.images)) {
-    door.images.forEach(img => {
-      if (img && img.trim() !== '' && !doorImages.includes(img)) {
-        doorImages.push(img);
-      }
-    });
-  }
-
-  // Если вообще нет фото, используем fallback
-  if (doorImages.length === 0) {
-    doorImages.push('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIyNSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzljYTNmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPtCd0LXRgiDQvdCw0YfQsNC70LAg0LTQu9GPINC00L7QsdCw0LLQu9C10L3QuNC1PC90ZXh0Pjwvc3ZnPg==');
-  }
+  const currentImages = getCurrentImages();
 
   return (
     <>
       <div className={styles.card}>
-        {/* Область изображения */}
+        {/* Область изображения - ФОТО ДВЕРЕЙ */}
         <div className={styles.imageSection}>
           <div 
             className={styles.imageWrapper}
@@ -58,7 +70,7 @@ export default function DoorCard({ door, onAddToCart }) {
             tabIndex={0}
           >
             <ImageSlider 
-              images={doorImages}
+              images={currentImages}
               productName={door.name}
               showThumbnails={false}
             />
@@ -68,7 +80,41 @@ export default function DoorCard({ door, onAddToCart }) {
           <div className={styles.priceBadge}>
             {door.price.toLocaleString()} ₽
           </div>
+
+          {/* Бейдж лучшая цена */}
+          <div className={styles.bestPriceBadge}>
+            лучшая цена
+          </div>
         </div>
+
+        {/* Выбор цвета - ФОТО ЦВЕТА в кружках */}
+        {door.colors && door.colors.length > 0 && (
+          <div className={styles.variantsSlider}>
+            <div className={styles.variantsList}>
+              {door.colors.map((color, index) => (
+                <button
+                  key={index}
+                  className={`${styles.variantItem} ${
+                    selectedColor?.name === color.name ? styles.variantActive : ''
+                  }`}
+                  onClick={() => handleColorChange(color)}
+                  title={color.name}
+                >
+                  <img 
+                    src={color.colorImage} 
+                    alt={color.name}
+                    className={styles.variantImage}
+                    onError={(e) => {
+                      // Если фото цвета не загрузилось, показываем hexCode
+                      e.target.style.display = 'none';
+                      e.target.parentElement.style.backgroundColor = color.hexCode;
+                    }}
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Информация о товаре */}
         <div className={styles.infoSection}>
@@ -76,20 +122,25 @@ export default function DoorCard({ door, onAddToCart }) {
             <h3 className={styles.title}>{door.name}</h3>
           </Link>
 
-          <div className={styles.specs}>
-            <div className={styles.specItem}>
-              <span className={styles.specLabel}>Стекло:</span>
-              <span className={styles.specValue}>{door.glass}</span>
-            </div>
-            <div className={styles.specItem}>
-              <span className={styles.specLabel}>Размер:</span>
-              <span className={styles.specValue}>{door.size}</span>
-            </div>
-            <div className={styles.specItem}>
-              <span className={styles.specLabel}>Покрытие:</span>
-              <span className={styles.specValue}>{door.color}</span>
-            </div>
+          <p className={styles.description}>дверь межкомнатная</p>
+
+          <div className={styles.priceSection}>
+            <span className={styles.currentPrice}>{door.price.toLocaleString()} ₽</span>
+            <span className={styles.oldPrice}>{Math.round(door.price * 1.1).toLocaleString()} ₽</span>
           </div>
+
+          <ul className={styles.options}>
+            <li className={styles.optionItem}>
+              <span className={styles.optionLabel}>Цвет:</span>
+              <span className={styles.optionValue}>
+                {selectedColor ? selectedColor.name : door.color}
+              </span>
+            </li>
+            <li className={styles.optionItem}>
+              <span className={styles.optionLabel}>Производитель:</span>
+              <span className={styles.optionValue}>{door.material}</span>
+            </li>
+          </ul>
 
           {/* Счетчик количества */}
           <div className={styles.quantitySelector}>
@@ -119,7 +170,7 @@ export default function DoorCard({ door, onAddToCart }) {
               className={styles.cartButton}
             >
               <ShoppingCart size={18} />
-              <span>В корзину • {quantity} шт.</span>
+              <span>В корзину</span>
             </button>
             
             <Link href={`/doors/${door.id}`} className={styles.detailsButton}>
@@ -135,7 +186,7 @@ export default function DoorCard({ door, onAddToCart }) {
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
             <ImageSlider 
-              images={doorImages}
+              images={currentImages}
               productName={door.name}
               isModal={true}
               onClose={() => setShowSliderModal(false)}

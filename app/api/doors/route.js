@@ -55,7 +55,8 @@ export async function POST(request) {
           tearType: data.tearType || 'Распашная',
           isActive: data.isActive !== undefined ? data.isActive : true,
           createdAt: now,
-          updatedAt: now
+          updatedAt: now,
+          colors: data.colors || []
         }
       ])
       .select()

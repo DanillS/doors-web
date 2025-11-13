@@ -923,3 +923,275 @@
     font-size: 13px;
   }
 }
+
+/* Добавляем в конец AdminPanel.module.css */
+
+/* Стили для раздела цветов */
+.colorsSection {
+  margin: 32px 0;
+  padding: 32px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0;
+}
+
+.addColorButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.addColorButton:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.colorItem {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.colorItem:last-child {
+  margin-bottom: 0;
+}
+
+.colorHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.colorInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.colorPreview {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 2px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+.colorPicker {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.colorPicker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.colorPicker::-webkit-color-swatch {
+  border: none;
+  border-radius: 6px;
+}
+
+.removeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: #fee2e2;
+  color: #dc2626;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.removeButton:hover {
+  background: #fecaca;
+  transform: scale(1.05);
+}
+
+.colorImages {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 20px;
+}
+
+.emptyColors {
+  text-align: center;
+  padding: 40px 20px;
+  color: #718096;
+}
+
+.emptyColors svg {
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.emptyColors p {
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+/* Адаптивность для цветов */
+@media (max-width: 768px) {
+  .colorsSection {
+    padding: 20px;
+  }
+  
+  .colorHeader {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .colorInfo {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .colorPreview,
+  .colorPicker {
+    align-self: flex-start;
+  }
+  
+  .sectionHeader {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+  
+  .addColorButton {
+    justify-content: center;
+  }
+}
+
+/* Стили для цветов */
+.colorsSection {
+  margin: 32px 0;
+  padding: 32px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.colorItem {
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 16px;
+}
+
+.colorHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.colorHeader h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.removeColorButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.removeColorButton:hover {
+  background: #dc2626;
+}
+
+.colorForm {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.colorPickerContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.colorInput {
+  width: 60px;
+  height: 40px;
+  border: 2px solid #e2e8f0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.colorValue {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d3748;
+  background: #f8fafc;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.addColorButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.addColorButton:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}

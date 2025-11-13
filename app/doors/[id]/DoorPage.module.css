@@ -1068,3 +1068,309 @@
 .relatedSection {
   display: none;
 }
+
+/* Добавляем в DoorPage.module.css */
+
+/* Стили для выбора цвета */
+.colorsSelector {
+  margin-bottom: 24px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.colorsHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.colorsTitle {
+  font-size: 16px;
+}
+
+.selectedColorName {
+  margin-left: auto;
+  font-weight: 600;
+  color: #3b82f6;
+  background: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid #3b82f6;
+}
+
+.colorsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+}
+
+.colorOption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.colorOption:hover {
+  border-color: #cbd5e0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.colorOptionActive {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.colorSwatch {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.colorOptionActive .colorSwatch {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.colorLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: #4a5568;
+}
+
+.colorOptionActive .colorLabel {
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+/* Адаптивность для цветов */
+@media (max-width: 768px) {
+  .colorsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 8px;
+  }
+  
+  .colorOption {
+    padding: 8px;
+  }
+  
+  .colorsHeader {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  
+  .selectedColorName {
+    margin-left: 0;
+  }
+}
+
+/* Варианты цветов */
+.variantsSlider {
+  margin: 24px 0;
+}
+
+.variantsTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 12px;
+}
+
+.variantsList {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 8px 0;
+}
+
+.variantItem {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+  background: #f8fafc;
+}
+
+.variantItem:hover {
+  border-color: #9ca3af;
+  transform: translateY(-2px);
+}
+
+.variantActive {
+  border-color: #3b82f6;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.variantImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.variantColorFallback {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+}
+
+/* Добавьте в DoorPage.module.css */
+
+.colorsSection {
+  margin: 20px 0;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.colorsHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.colorsTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.colorsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 12px;
+}
+
+.colorOption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.colorOption:hover {
+  border-color: #cbd5e0;
+  transform: translateY(-2px);
+}
+
+.colorOptionActive {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.colorImage {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.colorFallback {
+  width: 64px;
+  height: 64px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.colorName {
+  font-size: 12px;
+  font-weight: 500;
+  color: #4a5568;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.selectedColorInfo {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  font-size: 14px;
+  color: #4a5568;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .colorsSection {
+    padding: 12px;
+    margin: 16px 0;
+  }
+
+  .colorsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    gap: 10px;
+  }
+
+  .colorImage,
+  .colorFallback {
+    width: 56px;
+    height: 56px;
+  }
+
+  .colorName {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .colorsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    gap: 8px;
+  }
+
+  .colorImage,
+  .colorFallback {
+    width: 48px;
+    height: 48px;
+  }
+
+  .colorOption {
+    padding: 6px;
+    gap: 6px;
+  }
+
+  .colorName {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .colorsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

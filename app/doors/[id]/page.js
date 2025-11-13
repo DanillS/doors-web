@@ -2,8 +2,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { useCart } from '../../../context/CartContext'; // Добавляем импорт контекста
-import { ShoppingCart, ArrowLeft, Plus, Minus, Truck, Shield, Award, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useCart } from '../../../context/CartContext';
+import { ShoppingCart, ArrowLeft, Plus, Minus, Truck, Shield, Award, X, ChevronLeft, ChevronRight, Palette } from 'lucide-react';
 import ImageSlider from '../../../components/ImageSlider';
 import Header from '../../../components/Header';
 import PaymentModal from '../../../components/PaymentModal';
@@ -16,7 +16,7 @@ export default function DoorPage() {
   const [door, setDoor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState('description');
+  const [activeTab, setActiveTab] = useState('delivery');
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [cartNotification, setCartNotification] = useState(null);
   const [photoModal, setPhotoModal] = useState({
@@ -25,7 +25,8 @@ export default function DoorPage() {
     images: []
   });
 
-  // Используем контекст корзины вместо локального состояния
+  const [selectedColor, setSelectedColor] = useState(null);
+
   const { cart, addToCart, getTotalItems } = useCart();
 
   useEffect(() => {
@@ -37,6 +38,10 @@ export default function DoorPage() {
       const res = await fetch(`/api/doors/${params.id}`);
       const data = await res.json();
       setDoor(data);
+      
+      if (data.colors && data.colors.length > 0) {
+        setSelectedColor(data.colors[0]);
+      }
     } catch (error) {
       console.error('Error fetching door:', error);
     } finally {
@@ -44,14 +49,34 @@ export default function DoorPage() {
     }
   };
 
-  // ОБНОВЛЕННАЯ функция добавления в корзину
+  const handleColorChange = (color) => {
+    setSelectedColor(color);
+  };
+
+  const getCurrentImages = () => {
+    if (selectedColor && selectedColor.images && selectedColor.images.length > 0) {
+      return selectedColor.images;
+    }
+    
+    if (door?.images && door.images.length > 0) {
+      return door.images;
+    }
+    
+    return door?.image ? [door.image] : [];
+  };
+
   const handleAddToCart = () => {
     if (door) {
-      addToCart(door, quantity); // Используем функцию из контекста
+      const cartItem = {
+        ...door,
+        selectedColor: selectedColor,
+        quantity: quantity
+      };
       
-      // Показываем уведомление
+      addToCart(cartItem, quantity);
+      
       setCartNotification({
-        message: `${quantity} × ${door.name} добавлено в корзину`,
+        message: `${quantity} × ${door.name}${selectedColor ? ` (${selectedColor.name})` : ''} добавлено в корзину`,
         type: 'success'
       });
       
@@ -59,7 +84,7 @@ export default function DoorPage() {
         setCartNotification(null);
       }, 3000);
       
-      setQuantity(1); // Сбрасываем количество после добавления
+      setQuantity(1);
     }
   };
 
@@ -75,7 +100,7 @@ export default function DoorPage() {
     setPhotoModal({
       isOpen: true,
       currentIndex: startIndex,
-      images: images
+      images: images || []
     });
   };
 
@@ -90,14 +115,14 @@ export default function DoorPage() {
   const nextPhoto = () => {
     setPhotoModal(prev => ({
       ...prev,
-      currentIndex: (prev.currentIndex + 1) % prev.images.length
+      currentIndex: (prev.currentIndex + 1) % (prev.images?.length || 1)
     }));
   };
 
   const prevPhoto = () => {
     setPhotoModal(prev => ({
       ...prev,
-      currentIndex: (prev.currentIndex - 1 + prev.images.length) % prev.images.length
+      currentIndex: (prev.currentIndex - 1 + (prev.images?.length || 1)) % (prev.images?.length || 1)
     }));
   };
 
@@ -131,7 +156,7 @@ export default function DoorPage() {
         <p className={styles.errorDescription}>
           Возможно, эта дверь была удалена или перемещена
         </p>
-        <Link href="/" className={styles.backLink}>
+        <Link href="/" className={styles.backButton}>
           <ArrowLeft size={18} />
           <span>Вернуться в каталог</span>
         </Link>
@@ -139,21 +164,15 @@ export default function DoorPage() {
     );
   }
 
-  const doorImages = door.images && door.images.length > 0 
-    ? door.images 
-    : door.image 
-      ? [door.image] 
-      : [];
+  const currentImages = getCurrentImages();
 
   return (
     <div className={styles.container}>
-      {/* Header с корзиной */}
       <Header 
-        cartItemsCount={getTotalItems()} // Используем функцию из контекста
+        cartItemsCount={getTotalItems()}
         onCartClick={() => setIsPaymentModalOpen(true)}
       />
 
-      {/* Уведомление о добавлении в корзину */}
       {cartNotification && (
         <div className={`${styles.cartNotification} ${styles[cartNotification.type]}`}>
           <div className={styles.cartNotificationContent}>
@@ -170,7 +189,6 @@ export default function DoorPage() {
         </div>
       )}
 
-      {/* Навигация */}
       <div className={styles.navigation}>
         <div className={styles.navContainer}>
           <Link href="/" className={styles.backButton}>
@@ -185,36 +203,79 @@ export default function DoorPage() {
         </div>
       </div>
 
-      {/* Основной контент */}
       <div className={styles.content}>
-        {/* Слайдер фото */}
         <div className={styles.sliderSection}>
           <div 
-            onClick={() => openPhotoModal(doorImages)}
+            onClick={() => openPhotoModal(currentImages)}
             style={{ cursor: 'pointer', width: '100%' }}
           >
             <ImageSlider 
-              images={doorImages}
+              images={currentImages}
               productName={door.name}
               showThumbnails={true}
             />
           </div>
         </div>
 
-        {/* Информация о товаре */}
         <div className={styles.infoSection}>
           <div className={styles.header}>
             <div className={styles.categoryBadge}>Элитные двери</div>
             <h1 className={styles.title}>{door.name}</h1>
           </div>
 
-          {/* Цена */}
           <div className={styles.priceSection}>
-            <div className={styles.price}>{door.price.toLocaleString()} ₽</div>
+            <div className={styles.price}>{door.price?.toLocaleString()} ₽</div>
             <div className={styles.priceNote}>за единицу</div>
           </div>
 
-          {/* Характеристики */}
+          {/* Секция выбора цвета */}
+          {door.colors && door.colors.length > 0 && (
+            <div className={styles.colorsSection}>
+              <div className={styles.colorsHeader}>
+                <Palette size={18} />
+                <span className={styles.colorsTitle}>Доступные цвета:</span>
+              </div>
+              <div className={styles.colorsGrid}>
+                {door.colors.map((color, index) => (
+                  <button
+                    key={index}
+                    className={`${styles.colorOption} ${
+                      selectedColor?.name === color.name ? styles.colorOptionActive : ''
+                    }`}
+                    onClick={() => handleColorChange(color)}
+                    title={color.name}
+                  >
+                    {color.colorImage ? (
+                      <img 
+                        src={color.colorImage} 
+                        alt={color.name}
+                        className={styles.colorImage}
+                        onError={(e) => {
+                          // Если фото не загрузилось, показываем цвет из палитры
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'block';
+                        }}
+                      />
+                    ) : null}
+                    <div 
+                      className={styles.colorFallback}
+                      style={{ 
+                        backgroundColor: color.hexCode || '#cccccc',
+                        display: color.colorImage ? 'none' : 'block'
+                      }}
+                    />
+                    <span className={styles.colorName}>{color.name}</span>
+                  </button>
+                ))}
+              </div>
+              {selectedColor && (
+                <div className={styles.selectedColorInfo}>
+                  Выбран: <strong>{selectedColor.name}</strong>
+                </div>
+              )}
+            </div>
+          )}
+
           <div className={styles.specs}>
             <h3 className={styles.specsTitle}>Основные характеристики</h3>
             <div className={styles.specsGrid}>
@@ -224,7 +285,9 @@ export default function DoorPage() {
               </div>
               <div className={styles.specItem}>
                 <span className={styles.specLabel}>Цвет:</span>
-                <span className={styles.specValue}>{door.color}</span>
+                <span className={styles.specValue}>
+                  {selectedColor ? selectedColor.name : door.color}
+                </span>
               </div>
               <div className={styles.specItem}>
                 <span className={styles.specLabel}>Тип открывания:</span>
@@ -245,7 +308,6 @@ export default function DoorPage() {
             </div>
           </div>
 
-          {/* Статус и доставка */}
           <div className={styles.deliveryInfo}>
             <div className={styles.status}>
               <div className={`${styles.statusBadge} ${door.isActive ? styles.inStock : styles.outOfStock}`}>
@@ -255,7 +317,6 @@ export default function DoorPage() {
             </div>
           </div>
 
-          {/* Выбор количества */}
           <div className={styles.quantitySection}>
             <label className={styles.quantityLabel}>Количество:</label>
             <div className={styles.quantityControls}>
@@ -275,11 +336,10 @@ export default function DoorPage() {
               </button>
             </div>
             <div className={styles.quantityTotal}>
-              Итого: {(door.price * quantity).toLocaleString()} ₽
+              Итого: {((door.price || 0) * quantity).toLocaleString()} ₽
             </div>
           </div>
 
-          {/* Кнопки действий */}
           <div className={styles.actionButtons}>
             <button
               onClick={handleAddToCart}
@@ -301,7 +361,6 @@ export default function DoorPage() {
 
           <QRCodeGenerator door={door} />
 
-          {/* Преимущества */}
           <div className={styles.features}>
             <div className={styles.feature}>
               <Truck size={20} />
@@ -319,21 +378,8 @@ export default function DoorPage() {
         </div>
       </div>
 
-      {/* Детальная информация */}
       <div className={styles.detailsSection}>
         <div className={styles.tabs}>
-          {/* <button 
-            className={`${styles.tab} ${activeTab === 'description' ? styles.active : ''}`}
-            onClick={() => setActiveTab('description')}
-          >
-            Описание
-          </button>
-          <button 
-            className={`${styles.tab} ${activeTab === 'specifications' ? styles.active : ''}`}
-            onClick={() => setActiveTab('specifications')}
-          >
-            Характеристики
-          </button> */}
           <button 
             className={`${styles.tab} ${activeTab === 'delivery' ? styles.active : ''}`}
             onClick={() => setActiveTab('delivery')}
@@ -343,41 +389,6 @@ export default function DoorPage() {
         </div>
 
         <div className={styles.tabContent}>
-          {/* {activeTab === 'description' && (
-            <div className={styles.description}>
-              <h3>О товаре</h3>
-              <p>{door.description}</p>
-            </div>
-          )} */}
-
-          {/* {activeTab === 'specifications' && (
-            <div className={styles.specifications}>
-              <h3>Технические характеристики</h3>
-              <div className={styles.specsTable}>
-                <div className={styles.specRow}>
-                  <span>Название</span>
-                  <span>{door.name}</span>
-                </div>
-                <div className={styles.specRow}>
-                  <span>Размер</span>
-                  <span>{door.size}</span>
-                </div>
-                <div className={styles.specRow}>
-                  <span>Стекло</span>
-                  <span>{door.glass}</span>
-                </div>
-                <div className={styles.specRow}>
-                  <span>Цвет</span>
-                  <span>{door.color}</span>
-                </div>
-                <div className={styles.specRow}>
-                  <span>Тип открывания</span>
-                  <span>{door.tearType}</span>
-                </div>
-              </div>
-            </div>
-          )} */}
-
           {activeTab === 'delivery' && (
             <div className={styles.delivery}>
               <h3>Доставка и установка</h3>
@@ -400,7 +411,6 @@ export default function DoorPage() {
         </div>
       </div>
 
-      {/* Модальное окно фото */}
       {photoModal.isOpen && (
         <div className={styles.photoModalOverlay} onClick={closePhotoModal}>
           <div className={styles.photoModal} onClick={(e) => e.stopPropagation()}>
@@ -408,34 +418,37 @@ export default function DoorPage() {
               <X size={24} />
             </button>
             
-            <div className={styles.photoModalCounter}>
-              {photoModal.currentIndex + 1} / {photoModal.images.length}
-            </div>
-
-            {photoModal.images.length > 1 && (
+            {photoModal.images && photoModal.images.length > 0 && (
               <>
-                <button className={`${styles.photoModalNav} ${styles.photoModalPrev}`} onClick={prevPhoto}>
-                  <ChevronLeft size={24} />
-                </button>
-                <button className={`${styles.photoModalNav} ${styles.photoModalNext}`} onClick={nextPhoto}>
-                  <ChevronRight size={24} />
-                </button>
+                <div className={styles.photoModalCounter}>
+                  {photoModal.currentIndex + 1} / {photoModal.images.length}
+                </div>
+
+                {photoModal.images.length > 1 && (
+                  <>
+                    <button className={`${styles.photoModalNav} ${styles.photoModalPrev}`} onClick={prevPhoto}>
+                      <ChevronLeft size={24} />
+                    </button>
+                    <button className={`${styles.photoModalNav} ${styles.photoModalNext}`} onClick={nextPhoto}>
+                      <ChevronRight size={24} />
+                    </button>
+                  </>
+                )}
+
+                <img
+                  src={photoModal.images[photoModal.currentIndex]}
+                  alt={`${door.name} - фото ${photoModal.currentIndex + 1}`}
+                  className={styles.photoModalImage}
+                  onError={(e) => {
+                    e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjM3NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzljYTNmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPuKdpO+4j+WIhuW6pzwvdGV4dD48L3N2Zz4=';
+                  }}
+                />
               </>
             )}
-
-            <img
-              src={photoModal.images[photoModal.currentIndex]}
-              alt={`${door.name} - фото ${photoModal.currentIndex + 1}`}
-              className={styles.photoModalImage}
-              onError={(e) => {
-                e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjM3NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzljYTNmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPuKdpO+4j+WIhuW6pzwvdGV4dD48L3N2Zz4=';
-              }}
-            />
           </div>
         </div>
       )}
 
-      {/* Футер */}
       <footer className={styles.footer}>
         <div className={styles.footerContent}>
           <div className={styles.footerBrand}>
@@ -492,12 +505,11 @@ export default function DoorPage() {
         </div>
       </footer>
 
-      {/* Модальное окно корзины */}
       <PaymentModal
         isOpen={isPaymentModalOpen}
         onClose={() => setIsPaymentModalOpen(false)}
-        cartItems={cart} // Используем cart из контекста
-        onCartUpdate={() => {}} // Теперь не нужно, так как используем контекст
+        cartItems={cart}
+        onCartUpdate={() => {}}
       />
     </div>
   );

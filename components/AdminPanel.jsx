@@ -1,11 +1,10 @@
 // components/AdminPanel.jsx
 'use client';
 import { useState, useEffect } from 'react';
-import { Plus, Trash2, Edit, Save, X, Image, Percent, ArrowUp, ArrowDown, QrCode } from 'lucide-react';
+import { Plus, Trash2, Edit, Save, X, Image, Percent, ArrowUp, ArrowDown, QrCode, Palette } from 'lucide-react';
 import styles from './AdminPanel.module.css';
-import QRCodeGenerator from './QRCodeGenerator';
-import Link from 'next/link'
-import StoreQRCode from '../components/StoreQRCode'
+import Link from 'next/link';
+import StoreQRCode from '../components/StoreQRCode';
 
 export default function AdminPanel() {
   const [doors, setDoors] = useState([]);
@@ -18,16 +17,13 @@ export default function AdminPanel() {
     material: 'Производитель',
     size: '',
     color: '',
-    image: '',
-    images: [],
     glass: '',
     tearType: '',
     description: 'Количество полотен',
-    isActive: true
+    isActive: true,
+    colors: []
   });
-  const [newImageUrl, setNewImageUrl] = useState('');
   
-  // Состояния для массового изменения цен
   const [showMassUpdate, setShowMassUpdate] = useState(false);
   const [massUpdateData, setMassUpdateData] = useState({
     operation: 'increase',
@@ -54,7 +50,6 @@ export default function AdminPanel() {
     }
   };
 
-  // Функция массового обновления цен
   const handleMassPriceUpdate = async () => {
     if (!massUpdateData.percentage || massUpdateData.percentage <= 0) {
       setUpdateMessage({ type: 'error', text: 'Введите корректный процент' });
@@ -86,8 +81,6 @@ export default function AdminPanel() {
           category: 'all'
         });
         setShowMassUpdate(false);
-        
-        // Обновляем список дверей
         fetchDoors();
       } else {
         setUpdateMessage({ 
@@ -106,6 +99,89 @@ export default function AdminPanel() {
     }
   };
 
+  // Функции для работы с цветами
+  const addColor = () => {
+    setFormData(prev => ({
+      ...prev,
+      colors: [
+        ...(prev.colors || []),
+        {
+          name: '',
+          hexCode: '#3B82F6',
+          colorImage: '',
+          images: [],
+          isActive: true,
+          newImageUrl: ''
+        }
+      ]
+    }));
+  };
+
+  const removeColor = (colorIndex) => {
+    setFormData(prev => ({
+      ...prev,
+      colors: (prev.colors || []).filter((_, index) => index !== colorIndex)
+    }));
+  };
+
+  const updateColor = (colorIndex, field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      colors: (prev.colors || []).map((color, index) => 
+        index === colorIndex ? { ...color, [field]: value } : color
+      )
+    }));
+  };
+
+  const addColorImage = (colorIndex) => {
+    const color = formData.colors?.[colorIndex];
+    if (color?.newImageUrl && color.newImageUrl.trim()) {
+      setFormData(prev => ({
+        ...prev,
+        colors: (prev.colors || []).map((color, index) => 
+          index === colorIndex 
+            ? { 
+                ...color, 
+                images: [...(color.images || []), color.newImageUrl.trim()],
+                newImageUrl: ''
+              }
+            : color
+        )
+      }));
+    }
+  };
+
+  const removeColorImage = (colorIndex, imageIndex) => {
+    setFormData(prev => ({
+      ...prev,
+      colors: (prev.colors || []).map((color, index) => 
+        index === colorIndex 
+          ? {
+              ...color,
+              images: (color.images || []).filter((_, i) => i !== imageIndex)
+            }
+          : color
+      )
+    }));
+  };
+
+  const moveColorImage = (colorIndex, fromIndex, toIndex) => {
+    const currentColors = formData.colors || [];
+    const color = currentColors[colorIndex];
+    if (!color) return;
+
+    const newImages = [...(color.images || [])];
+    const [movedImage] = newImages.splice(fromIndex, 1);
+    newImages.splice(toIndex, 0, movedImage);
+    
+    setFormData(prev => ({
+      ...prev,
+      colors: (prev.colors || []).map((color, index) => 
+        index === colorIndex ? { ...color, images: newImages } : color
+      )
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -113,16 +189,26 @@ export default function AdminPanel() {
       const url = editingDoor ? `/api/doors/${editingDoor.id}` : '/api/doors';
       const method = editingDoor ? 'PUT' : 'POST';
 
+      const submitData = {
+        ...formData,
+        price: parseInt(formData.price) || 0,
+        colors: (formData.colors || []).map(color => ({
+          name: color.name || '',
+          hexCode: color.hexCode || '#3B82F6',
+          colorImage: color.colorImage || '',
+          images: (color.images || []).filter(url => url && url.trim() !== ''),
+          isActive: color.isActive !== false
+        })).filter(color => color.name.trim() !== '')
+      };
+
+      delete submitData.newImageUrl;
+
       const response = await fetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...formData,
-          price: parseInt(formData.price),
-          images: formData.images.filter(url => url.trim() !== '')
-        }),
+        body: JSON.stringify(submitData),
       });
 
       if (response.ok) {
@@ -143,31 +229,38 @@ export default function AdminPanel() {
       material: '',
       size: '',
       color: '',
-      image: '',
       glass: '',
       tearType: '',
-      images: [],
       description: '',
-      isActive: true
+      isActive: true,
+      colors: []
     });
-    setNewImageUrl('');
   };
 
   const editDoor = (door) => {
+    console.log('Editing door:', door);
+    
     setEditingDoor(door);
     setIsCreating(false);
+    
     setFormData({
-      name: door.name,
-      price: door.price.toString(),
-      material: door.material,
-      size: door.size,
-      color: door.color,
-      glass: door.glass,
-      tearType: door.tearType, 
-      image: door.image || '',
-      images: door.images || [],
-      description: door.description,
-      isActive: door.isActive
+      name: door.name || '',
+      price: door.price ? door.price.toString() : '',
+      material: door.material || '',
+      size: door.size || '',
+      color: door.color || '',
+      glass: door.glass || '',
+      tearType: door.tearType || '', 
+      description: door.description || '',
+      isActive: door.isActive !== false,
+      colors: door.colors?.map(color => ({
+        name: color.name || '',
+        hexCode: color.hexCode || '#3B82F6',
+        colorImage: color.colorImage || '',
+        images: color.images || [],
+        isActive: color.isActive !== false,
+        newImageUrl: ''
+      })) || []
     });
   };
 
@@ -180,30 +273,6 @@ export default function AdminPanel() {
         console.error('Error deleting door:', error);
       }
     }
-  };
-
-  const addImage = () => {
-    if (newImageUrl.trim()) {
-      setFormData(prev => ({
-        ...prev,
-        images: [...prev.images, newImageUrl.trim()]
-      }));
-      setNewImageUrl('');
-    }
-  };
-
-  const removeImage = (index) => {
-    setFormData(prev => ({
-      ...prev,
-      images: prev.images.filter((_, i) => i !== index)
-    }));
-  };
-
-  const moveImage = (fromIndex, toIndex) => {
-    const newImages = [...formData.images];
-    const [movedImage] = newImages.splice(fromIndex, 1);
-    newImages.splice(toIndex, 0, movedImage);
-    setFormData(prev => ({ ...prev, images: newImages }));
   };
 
   if (loading) {
@@ -219,7 +288,7 @@ export default function AdminPanel() {
     <div className={styles.adminContainer}>
       <div className={styles.adminHeader}>
         <div className={styles.headerContent}>
-            <div className={styles.headerText}>
+          <div className={styles.headerText}>
             <h1 className={styles.adminTitle}>Панель управления</h1>
             <p className={styles.adminSubtitle}>Управление каталогом элитных дверей</p>
           </div>
@@ -236,7 +305,6 @@ export default function AdminPanel() {
       </div>
 
       <div className={styles.adminContent}>
-        {/* Кнопка массового обновления цен */}
         <div className={styles.massUpdateSection}>
           <button
             onClick={() => setShowMassUpdate(!showMassUpdate)}
@@ -264,9 +332,7 @@ export default function AdminPanel() {
                 </div>
 
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>
-                    Процент (%)
-                  </label>
+                  <label className={styles.label}>Процент (%)</label>
                   <input
                     type="number"
                     value={massUpdateData.percentage}
@@ -344,7 +410,6 @@ export default function AdminPanel() {
           )}
         </div>
 
-        {/* Форма создания/редактирования */}
         <div className={styles.formSection}>
           <div className={styles.formHeader}>
             <h2 className={styles.formTitle}>
@@ -456,112 +521,180 @@ export default function AdminPanel() {
                     required
                   />
                 </div>
-
-                <div className={styles.formGroup}>
-                  <label className={styles.label}>Основное фото (URL) *</label>
-                  <input
-                    type="text"
-                    value={formData.image}
-                    onChange={(e) => setFormData({...formData, image: e.target.value})}
-                    className={styles.input}
-                    placeholder="https://example.com/photo.jpg"
-                    required
-                  />
-                </div>
               </div>
 
-              {/* Дополнительные фото для слайдера */}
-              <div className={styles.imagesSection}>
-                <label className={styles.label}>Дополнительные фото для слайдера</label>
-                <p className={styles.helpText}>
-                  Добавьте URL изображений для создания слайдера. Первое фото будет основным в каталоге.
-                </p>
-                
-                <div className={styles.addImageForm}>
-                  <input
-                    type="text"
-                    value={newImageUrl}
-                    onChange={(e) => setNewImageUrl(e.target.value)}
-                    className={styles.input}
-                    placeholder="https://example.com/photo2.jpg"
-                  />
+              {/* Секция цветов товара */}
+              <div className={styles.colorsSection}>
+                <div className={styles.sectionHeader}>
+                  <h3 className={styles.sectionTitle}>
+                    <Palette size={20} />
+                    Варианты цветов товара
+                  </h3>
                   <button
                     type="button"
-                    onClick={addImage}
-                    className={styles.addImageButton}
+                    onClick={addColor}
+                    className={styles.addColorButton}
                   >
                     <Plus size={16} />
-                    <span>Добавить фото</span>
+                    <span>Добавить цвет</span>
                   </button>
                 </div>
 
-                {/* Список добавленных фото */}
-                {formData.images.length > 0 && (
-                  <div className={styles.imagesList}>
-                    <h4 className={styles.imagesTitle}>
-                      Добавленные фото ({formData.images.length})
-                    </h4>
-                    <div className={styles.imagesGrid}>
-                      {formData.images.map((url, index) => (
-                        <div key={index} className={styles.imageItem}>
-                          <div className={styles.imagePreview}>
-                            <img 
-                              src={url} 
-                              alt={`Preview ${index + 1}`}
-                              onError={(e) => {
-                                e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9Ijc1IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmM2Y0ZjYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmaWxsPSIjOWNhM2ZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+0J3QtdGCINC00LvRjyDQtNC+0LHQsNCy0LvQtdC90LjQtTwvdGV4dD48L3N2Zz4=';
-                              }}
-                            />
-                            <div className={styles.imageOverlay}>
-                              <span className={styles.imageNumber}>{index + 1}</span>
-                              <div className={styles.imageActions}>
-                                {index > 0 && (
-                                  <button
-                                    type="button"
-                                    onClick={() => moveImage(index, index - 1)}
-                                    className={styles.imageAction}
-                                    title="Переместить вверх"
-                                  >
-                                    ↑
-                                  </button>
-                                )}
-                                {index < formData.images.length - 1 && (
-                                  <button
-                                    type="button"
-                                    onClick={() => moveImage(index, index + 1)}
-                                    className={styles.imageAction}
-                                    title="Переместить вниз"
-                                  >
-                                    ↓
-                                  </button>
-                                )}
-                                <button
-                                  type="button"
-                                  onClick={() => removeImage(index)}
-                                  className={styles.imageAction}
-                                  title="Удалить"
-                                >
-                                  <Trash2 size={14} />
-                                </button>
+                <p className={styles.helpText}>
+                  Добавьте цвета товара. Для каждого цвета можно указать фото образца и дополнительные фото дверей этого цвета.
+                </p>
+
+                {(formData.colors || []).map((color, colorIndex) => (
+                  <div key={colorIndex} className={styles.colorItem}>
+                    <div className={styles.colorHeader}>
+                      <div className={styles.colorInfo}>
+                        <div 
+                          className={styles.colorPreview}
+                          style={{ backgroundColor: color.hexCode }}
+                          title={color.hexCode}
+                        />
+                        <input
+                          type="text"
+                          value={color.name}
+                          onChange={(e) => updateColor(colorIndex, 'name', e.target.value)}
+                          className={styles.input}
+                          placeholder="Название цвета"
+                          required
+                        />
+                        <input
+                          type="color"
+                          value={color.hexCode}
+                          onChange={(e) => updateColor(colorIndex, 'hexCode', e.target.value)}
+                          className={styles.colorPicker}
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeColor(colorIndex)}
+                        className={styles.removeButton}
+                        title="Удалить цвет"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+
+                    <div className={styles.formGroup}>
+                      <label className={styles.label}>Фото цвета (URL) *</label>
+                      <input
+                        type="text"
+                        value={color.colorImage || ''}
+                        onChange={(e) => updateColor(colorIndex, 'colorImage', e.target.value)}
+                        className={styles.input}
+                        placeholder="https://example.com/color-sample.jpg"
+                        required
+                      />
+                      {color.colorImage && (
+                        <div className={styles.colorImagePreview}>
+                          <img 
+                            src={color.colorImage} 
+                            alt="Preview" 
+                            className={styles.previewImage}
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                            }}
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    <div className={styles.colorImages}>
+                      <div className={styles.addImageForm}>
+                        <input
+                          type="text"
+                          value={color.newImageUrl || ''}
+                          onChange={(e) => updateColor(colorIndex, 'newImageUrl', e.target.value)}
+                          className={styles.input}
+                          placeholder="URL фото двери этого цвета"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => addColorImage(colorIndex)}
+                          className={styles.addImageButton}
+                        >
+                          <Plus size={16} />
+                          <span>Добавить фото двери</span>
+                        </button>
+                      </div>
+
+                      {(color.images || []).length > 0 && (
+                        <div className={styles.imagesList}>
+                          <h4 className={styles.imagesTitle}>
+                            Фото дверей для {color.name || 'этого цвета'} ({(color.images || []).length})
+                          </h4>
+                          <div className={styles.imagesGrid}>
+                            {(color.images || []).map((image, imageIndex) => (
+                              <div key={imageIndex} className={styles.imageItem}>
+                                <div className={styles.imagePreview}>
+                                  <img 
+                                    src={image} 
+                                    alt={`${color.name} ${imageIndex + 1}`}
+                                    onError={(e) => {
+                                      e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9Ijc1IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmM2Y0ZjYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmaWxsPSIjOWNhM2ZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+0J3QtdGCINC00LvRjyDQtNC+0LHQsNCy0LvQtdC90LjQtTwvdGV4dD48L3N2Zz4=';
+                                    }}
+                                  />
+                                  <div className={styles.imageOverlay}>
+                                    <span className={styles.imageNumber}>{imageIndex + 1}</span>
+                                    <div className={styles.imageActions}>
+                                      {imageIndex > 0 && (
+                                        <button
+                                          type="button"
+                                          onClick={() => moveColorImage(colorIndex, imageIndex, imageIndex - 1)}
+                                          className={styles.imageAction}
+                                          title="Переместить вверх"
+                                        >
+                                          ↑
+                                        </button>
+                                      )}
+                                      {imageIndex < (color.images || []).length - 1 && (
+                                        <button
+                                          type="button"
+                                          onClick={() => moveColorImage(colorIndex, imageIndex, imageIndex + 1)}
+                                          className={styles.imageAction}
+                                          title="Переместить вниз"
+                                        >
+                                          ↓
+                                        </button>
+                                      )}
+                                      <button
+                                        type="button"
+                                        onClick={() => removeColorImage(colorIndex, imageIndex)}
+                                        className={styles.imageAction}
+                                        title="Удалить"
+                                      >
+                                        <Trash2 size={14} />
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
+                            ))}
                           </div>
                         </div>
-                      ))}
+                      )}
                     </div>
+                  </div>
+                ))}
+
+                {(!formData.colors || formData.colors.length === 0) && (
+                  <div className={styles.emptyColors}>
+                    <Palette size={48} />
+                    <p>Нет добавленных цветов</p>
+                    <button
+                      type="button"
+                      onClick={addColor}
+                      className={styles.addColorButton}
+                    >
+                      <Plus size={16} />
+                      <span>Добавить первый цвет</span>
+                    </button>
                   </div>
                 )}
               </div>
-
-              {/* <div className={styles.formGroup}>
-                <label className={styles.label}>Описание</label>
-                <textarea
-                  value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
-                  className={styles.textarea}
-                  rows="4"
-                />
-              </div> */}
 
               <div className={styles.formGroup}>
                 <label className={styles.checkboxLabel}>
@@ -594,7 +727,6 @@ export default function AdminPanel() {
           )}
         </div>
 
-        {/* Список дверей */}
         <div className={styles.doorsSection}>
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Все двери ({doors.length})</h2>
@@ -606,7 +738,7 @@ export default function AdminPanel() {
                 Неактивных: {doors.filter(d => !d.isActive).length}
               </span>
               <span className={styles.stat}>
-                С фото: {doors.filter(d => d.images && d.images.length > 0).length}
+                С цветами: {doors.filter(d => d.colors && d.colors.length > 0).length}
               </span>
             </div>
           </div>
@@ -616,7 +748,7 @@ export default function AdminPanel() {
               <div key={door.id} className={`${styles.doorCard} ${!door.isActive ? styles.inactiveDoor : ''}`}>
                 <div className={styles.doorImage}>
                   <img 
-                    src={door.image} 
+                    src={door.colors?.[0]?.images?.[0] || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIyNSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzljYTNmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPtCd0LXRgiDQvdCw0YfQsNC70LAg0LTQu9GPINC00L7QsdCw0LLQu9C10L3QuNC1PC90ZXh0Pjwvc3ZnPg=='} 
                     alt={door.name}
                     onError={(e) => {
                       e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIyNSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzljYTNmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPtCd0LXRgiDQvdCw0YfQsNC70LAg0LTQu9GPINC00L7QsdCw0LLQu9C10L3QuNC1PC90ZXh0Pjwvc3ZnPg==';
@@ -628,10 +760,10 @@ export default function AdminPanel() {
                     ) : (
                       <span className={styles.badgeInactive}>Неактивно</span>
                     )}
-                    {door.images && door.images.length > 0 && (
-                      <span className={styles.badgePhotos}>
-                        <Image size={12} />
-                        {door.images.length + 1}
+                    {door.colors && door.colors.length > 0 && (
+                      <span className={styles.badgeColors}>
+                        <Palette size={12} />
+                        {door.colors.length}
                       </span>
                     )}
                   </div>
