@@ -1,165 +1,161 @@
-/* components/ImageSlider.module.css */
-.sliderContainer {
+/* ImageSlider.module.css */
+
+/* Полноэкранный режим */
+.slFullscreenOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000000;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slFullscreenContainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.slFullscreenImageWrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 4/3;
-  border-radius: 12px;
-  overflow: hidden;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000000;
+}
+
+.slFullscreenImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Обычный слайдер */
+.slWrapper {
+  position: relative;
+  width: 100%;
   background: #f8fafc;
 }
 
-.modalSlider {
+.slImageContainer {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+}
+
+.slImageWrapper {
+  position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
 }
 
-.imageWrapper {
+.slImage {
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  object-fit: contain;
 }
 
-.image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* Меняем cover на contain для полного отображения */
-  transition: transform 0.5s ease;
+.slImageLoading {
+  opacity: 0.5;
 }
 
-.image:hover {
-  transform: scale(1.05);
-}
-
-.navButton {
+/* Навигация */
+.slNavButton {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.6);
-  color: white;
-  padding: 12px;
-  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.7);
   border: none;
+  color: white;
   cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s linear;
   z-index: 10;
 }
 
-.navButton:hover {
-  background: rgba(0, 0, 0, 0.8);
-  transform: translateY(-50%) scale(1.1);
+.slNavButton:hover {
+  background: rgba(0, 0, 0, 0.9);
 }
 
-.prevButton {
+.slPrev {
   left: 16px;
+  padding: 12px 14px 12px 12px;
 }
 
-.nextButton {
+.slNext {
   right: 16px;
+  padding: 12px 12px 12px 14px;
 }
 
-.counter {
+/* Полноэкранные кнопки */
+.slFullscreenOverlay .slNavButton {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 16px;
+}
+
+.slFullscreenOverlay .slNavButton:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.slFullscreenOverlay .slPrev {
+  left: 30px;
+}
+
+.slFullscreenOverlay .slNext {
+  right: 30px;
+}
+
+/* Счетчик */
+.slCounter {
   position: absolute;
   top: 16px;
   left: 16px;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.8);
   color: white;
   padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 14px;
+  border-radius: 16px;
+  font-size: 13px;
   font-weight: 600;
-  backdrop-filter: blur(4px);
   z-index: 10;
 }
 
-.closeButton {
+.slFullscreenOverlay .slCounter {
+  top: 30px;
+  left: 30px;
+  background: rgba(255, 255, 255, 0.15);
+  font-size: 14px;
+}
+
+.slCurrent {
+  color: #bb0026;
+  font-weight: 700;
+}
+
+/* Бейдж количества фото */
+.slPhotoBadge {
   position: absolute;
   top: 16px;
   right: 16px;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  padding: 10px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(4px);
-  z-index: 10;
-}
-
-.closeButton:hover {
-  background: rgba(0, 0, 0, 0.9);
-  transform: scale(1.1);
-}
-
-.thumbnails {
-  display: flex;
-  gap: 8px;
-  margin-top: 16px;
-  overflow-x: auto;
-  padding: 8px 0;
-  scrollbar-width: thin;
-}
-
-.thumbnails::-webkit-scrollbar {
-  height: 4px;
-}
-
-.thumbnails::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 2px;
-}
-
-.thumbnails::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 2px;
-}
-
-.thumbnail {
-  flex-shrink: 0;
-  width: 60px;
-  height: 60px;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.thumbnail:hover {
-  border-color: #9ca3af;
-  transform: translateY(-2px);
-}
-
-.thumbnailActive {
-  border-color: #3b82f6;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-.thumbnailImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.thumbnailOverlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(59, 130, 246, 0.1);
-}
-
-.photoCountBadge {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: #3b82f6;
+  background: #bb0026;
   color: white;
   padding: 4px 8px;
   border-radius: 12px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -167,57 +163,173 @@
   z-index: 10;
 }
 
-.modalOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.95);
-  z-index: 100;
+/* Кнопка закрытия */
+.slClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  animation: fadeIn 0.3s ease;
+  z-index: 10;
 }
 
-.modalContent {
+.slClose:hover {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.slFullscreenOverlay .slClose {
+  top: 30px;
+  right: 30px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.slFullscreenOverlay .slClose:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Миниатюры */
+.slThumbnails {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 8px 0;
+  overflow-x: auto;
+}
+
+.slFullscreenThumbnails {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
   max-width: 90vw;
-  max-height: 90vh;
-  width: auto;
-  animation: scaleIn 0.3s ease;
+  overflow-x: auto;
+  z-index: 10;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.slThumbnail {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  border: 2px solid #dadada;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #f8fafc;
+  padding: 0;
 }
 
-@keyframes scaleIn {
-  from { 
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to { 
-    opacity: 1;
-    transform: scale(1);
-  }
+.slThumbnail:hover {
+  border-color: #878787;
 }
 
-@media (max-width: 768px) {
-  .sliderContainer {
+.slThumbnailActive {
+  border-color: #bb0026;
+}
+
+.slThumbnailImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Полноэкранные миниатюры */
+.slFullscreenThumbnails .slThumbnail {
+  width: 50px;
+  height: 50px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.slFullscreenThumbnails .slThumbnailActive {
+  border-color: #bb0026;
+}
+
+/* Спиннер */
+.slSpinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f4f6;
+  border-top: 3px solid #bb0026;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  z-index: 5;
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Адаптивность */
+@media screen and (max-width: 767px) {
+  .slImageContainer {
     aspect-ratio: 1;
   }
   
-  .navButton {
+  .slNavButton {
     padding: 8px;
   }
   
-  .thumbnail {
-    width: 50px;
-    height: 50px;
+  .slPrev {
+    left: 8px;
   }
   
-  .modalContent {
-    max-width: 95vw;
-    max-height: 95vh;
+  .slNext {
+    right: 8px;
+  }
+  
+  .slCounter,
+  .slPhotoBadge,
+  .slClose {
+    top: 8px;
+    left: 8px;
+  }
+  
+  .slFullscreenOverlay .slNavButton {
+    padding: 12px;
+  }
+  
+  .slFullscreenOverlay .slPrev {
+    left: 15px;
+  }
+  
+  .slFullscreenOverlay .slNext {
+    right: 15px;
+  }
+  
+  .slFullscreenOverlay .slClose,
+  .slFullscreenOverlay .slCounter {
+    top: 15px;
+    right: 15px;
+    left: 15px;
+  }
+  
+  .slFullscreenThumbnails {
+    bottom: 15px;
+    padding: 8px 12px;
+  }
+  
+  .slThumbnail {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .slFullscreenThumbnails .slThumbnail {
+    width: 40px;
+    height: 40px;
   }
 }
